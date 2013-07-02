@@ -8,6 +8,7 @@ using System.Windows;
 using Microsoft.Kinect;
 using Microsoft.Speech.Recognition;
 using Microsoft.Speech.AudioFormat;
+using System.Threading;
 
 namespace KungFuNao.Tools
 {
@@ -18,6 +19,7 @@ namespace KungFuNao.Tools
         private RecognizerInfo ri;
         bool firedEvent;
         String recognisedWord;
+        private AutoResetEvent speechRecognizedEvent;
 
         public KinectSpeechRecognition(KinectSensor kinectSensor)
         {
@@ -55,6 +57,7 @@ namespace KungFuNao.Tools
             }
              * */
 
+            this.speechRecognizedEvent = new AutoResetEvent(false);
 
             ri = GetKinectRecognizer();
 
@@ -134,6 +137,7 @@ namespace KungFuNao.Tools
             System.Console.WriteLine(e.Result.Semantics.Value.ToString());
             recognisedWord = e.Result.Semantics.Value.ToString();
             firedEvent = true;
+            this.speechRecognizedEvent.Set();
             //}
         }
 
@@ -193,13 +197,11 @@ namespace KungFuNao.Tools
 
             var g = new Grammar(gb);
             speechEngine.LoadGrammar(g);
-
+            
 
             firedEvent = false;
-            while (!firedEvent)
-            {
-
-            }
+            this.speechRecognizedEvent.WaitOne(10000);
+           
             return recognisedWord;
         }
 
@@ -223,6 +225,7 @@ namespace KungFuNao.Tools
 
             var g = new Grammar(gb);
             speechEngine.LoadGrammar(g);
+
 
 
             firedEvent = false;
