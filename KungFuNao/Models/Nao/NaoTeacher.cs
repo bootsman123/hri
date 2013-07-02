@@ -161,8 +161,7 @@ namespace KungFuNao.Models.Nao
         private void explainCompleteKata()
         {
             naoCommenter.explainWhileMoving("Today we are going to focus on a robot technique, it is used to defend against evil robots");
-
-            textToSpeechProxy.say("The complete technique looks like this");
+            naoCommenter.explainWhileStandingWhileWaiting("The complete technique looks like this");
 
             foreach (Scene scene in this.scenario)
             {
@@ -172,10 +171,9 @@ namespace KungFuNao.Models.Nao
 
         private void explainEveryKataMotion()
         {
-            textToSpeechProxy.post.say("I will now explain every motion you need to perfom.");
-            behaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_EXPLAIN2);
-            textToSpeechProxy.say("Please move your body along with my body!");
-            textToSpeechProxy.say("I hope you are ready!");
+            naoCommenter.explainWithMovement("I will now explain every motion you need to perfom.",NaoBehaviors.BEHAVIOR_EXPLAIN2);
+            naoCommenter.explainWhileStandingWhileWaiting("Please move your body along with my body!");
+            naoCommenter.explainWhileStandingWhileWaiting("I hope you are ready!");
             int movementNumber = 0;
             foreach (Scene scene in this.scenario)
             {
