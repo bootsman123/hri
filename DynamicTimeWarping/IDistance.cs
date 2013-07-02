@@ -8,6 +8,6 @@ namespace DynamicTimeWarping
 {
     public interface IDistance<T>
     {
-        double Distance(T a, T b);
+        double Distance(T a, T b); 
     }
 }
