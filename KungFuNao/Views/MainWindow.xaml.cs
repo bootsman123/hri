@@ -98,7 +98,7 @@ namespace KungFuNao
             this.buttonRecord.Click += new RoutedEventHandler(this.onClickButtonRecord);
             this.buttonPlay.Click += new RoutedEventHandler(this.onClickButtonPlay);
             this.buttonStop.Click += new RoutedEventHandler(this.onClickButtonStop);
-            //this.buttonRun.Click += new RoutedEventHandler(this.onClickButtonRun);
+            this.buttonRun.Click += new RoutedEventHandler(this.onClickButtonRun);
 
             // Color stream.
             this.colorStreamManager = new ColorStreamManager();
@@ -115,14 +115,12 @@ namespace KungFuNao
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.kinectSensorSkeletonFrameReady);
 
             // Initialize proxies.
-            /*
-            this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
-            this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
+            //this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
+            //this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.speechRecognition = new KinectSpeechRecognition(this.kinectSensor);
-
-            this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.scenario);
+            
+            this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.Scenario);
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
-             * */
         }
 
         /// <summary>
@@ -207,7 +205,7 @@ namespace KungFuNao
         /// <param name="e"></param>
         private void onClickButtonRun(object sender, RoutedEventArgs e)
         {
-            this.naoTeacher.start();
+            this.naoTeacher.Start();
         }
 
         private void replayColorImageFrameReady(object sender, ReplayColorImageFrameReadyEventArgs e)
@@ -339,8 +337,9 @@ namespace KungFuNao
             // Save data.
             this.SaveData();
 
-            this.speechRecognition.stop();
+            this.speechRecognition.Stop();
             this.kinectSensor.Stop();
+            this.naoTeacher.Stop();
         }
 
         /// <summary>
@@ -351,7 +350,7 @@ namespace KungFuNao
         public void OnWindowLoaded(object sender, EventArgs e)
         {
             this.kinectSensor.Start();
-            //this.speechRecognition.start();
+            this.speechRecognition.Start();
         }
     }
 }

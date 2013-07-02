@@ -14,12 +14,29 @@ namespace KungFuNao.Tools
 {
     public class KinectSpeechRecognition
     {
-        private KinectSensor sensor;
-        private SpeechRecognitionEngine speechEngine;
-        private RecognizerInfo ri;
-        private bool firedEvent;
-        private String recognisedWord;
-        private AutoResetEvent speechRecognizedEvent;
+        public static readonly double CONFIDENCE_THRESHOLD = 0.3;
+
+        public static readonly String CHOICE_POSITIVE = "POSITIVE";
+        public static readonly String CHOICE_NEGATIVE = "NEGATIVE";
+        public static readonly String CHOICE_LEFT = "LEFT";
+        public static readonly String CHOICE_RIGHT = "RIGHT";
+
+        public static readonly List<String> CHOICES_POSITIVE_NEGATIVE = new List<String> {
+            KinectSpeechRecognition.CHOICE_POSITIVE,
+            KinectSpeechRecognition.CHOICE_NEGATIVE };
+        public static readonly List<String> CHOICES_LEFT_RIGHT = new List<String> {
+            KinectSpeechRecognition.CHOICE_LEFT,
+            KinectSpeechRecognition.CHOICE_RIGHT };
+
+        public Dictionary<String, List<String>> Dictionary { get; private set; }
+
+        private KinectSensor KinectSensor;
+        private RecognizerInfo RecognizerInfo;
+        private SpeechRecognitionEngine SpeechRecognitionEngine;
+
+        private AutoResetEvent SpeechRecognizedEvent;
+        private String RecognizedChoice;
+        private List<String> RecognizableChoices;
 
         /// <summary>
         /// Constructor.
@@ -27,111 +44,160 @@ namespace KungFuNao.Tools
         /// <param name="kinectSensor"></param>
         public KinectSpeechRecognition(KinectSensor kinectSensor)
         {
-            this.sensor = kinectSensor;
-        }
+            this.KinectSensor = kinectSensor;
+            this.RecognizerInfo = this.FindRecognizerInfo();
+            this.SpeechRecognitionEngine = new SpeechRecognitionEngine(this.RecognizerInfo); // this.RecognizerInfo.Id ?
 
-        public void start()
-        {
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::start() - Begin");
-
-            this.ri = GetKinectRecognizer();
-
-            if (this.ri == null)
-            {
-                return;
-            }
-
-            this.speechEngine = new SpeechRecognitionEngine(ri.Id);
-
-            this.setGrammar(new string[] { "forward", "backward" });
-
-            this.speechEngine.SpeechRecognized += SpeechRecognized;
-            this.speechEngine.SpeechRecognitionRejected += SpeechRejected;
-
-            this.speechEngine.SetInputToAudioStream(sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
-            this.speechEngine.RecognizeAsync(RecognizeMode.Multiple);
-
-            this.speechRecognizedEvent = new AutoResetEvent(false);
-
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::start() - End");
-        }
-
-        public void stop()
-        {
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::stop() - Begin");
-
-            if (null != this.speechEngine)
-            {
-                this.speechEngine.SpeechRecognized -= SpeechRecognized;
-                this.speechEngine.SpeechRecognitionRejected -= SpeechRejected;
-                this.speechEngine.RecognizeAsyncStop();
-            }
-
-            if (null != this.sensor)
-            {
-                this.sensor.AudioSource.Stop();
-
-                this.sensor = null;
-            }
-
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::stop() - End");
-        }
-
-        public void setGrammar(string[] words)
-        {
-            speechEngine.UnloadAllGrammars();
-            var directions = new Choices();
-            foreach (string word in words)
-            {
-
-                directions.Add(new SemanticResultValue(word, word));
-            }
-            var gb = new GrammarBuilder { Culture = ri.Culture };
-            gb.Append(directions);
-
-            var g = new Grammar(gb);
-            speechEngine.LoadGrammar(g);
+            // Build and load grammar.
+            this.Dictionary = this.BuildDictionary();
+            this.SpeechRecognitionEngine.LoadGrammar(this.BuildGrammar(this.Dictionary));
         }
 
         /// <summary>
-        /// Handler for recognized speech events.
+        /// Start speech recognition.
+        /// </summary>
+        public void Start()
+        {
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::Start()");
+
+            // Attach events.
+            this.SpeechRecognitionEngine.SpeechRecognized += this.SpeechRecognized;
+
+            this.SpeechRecognitionEngine.SetInputToAudioStream(
+                this.KinectSensor.AudioSource.Start(),
+                new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
+            this.SpeechRecognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
+        /// <summary>
+        /// Stop speech recognition.
+        /// </summary>
+        public void Stop()
+        {
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::Stop()");
+
+            if (null != this.SpeechRecognitionEngine)
+            {
+                this.SpeechRecognitionEngine.SpeechRecognized -= this.SpeechRecognized;
+                this.SpeechRecognitionEngine.RecognizeAsyncStop();
+            }
+
+            if (null != this.KinectSensor)
+            {
+                this.KinectSensor.AudioSource.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Builds a dictionary of choices.
+        /// </summary>
+        /// <returns></returns>
+        private Dictionary<String, List<String>> BuildDictionary()
+        {
+            Dictionary<String, List<String>> dictionary = new Dictionary<String, List<String>>();
+            dictionary.Add(KinectSpeechRecognition.CHOICE_POSITIVE, new List<String> { "yes", "sure", "yeah", "please", "ok", "okay" });
+            dictionary.Add(KinectSpeechRecognition.CHOICE_NEGATIVE, new List<String> { "no", "nope" });
+            dictionary.Add(KinectSpeechRecognition.CHOICE_LEFT, new List<String> { "left", "left hand" });
+            dictionary.Add(KinectSpeechRecognition.CHOICE_RIGHT, new List<String> { "right", "right hand" });
+
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Builds the grammar.
+        /// </summary>
+        /// <param name="dictionary"></param>
+        /*
+        private Grammar BuildGrammar(Dictionary<String,List<String>> dictionary)
+        {
+            var grammarBuilder = new GrammarBuilder { Culture  = this.RecognizerInfo.Culture };
+
+            foreach (KeyValuePair<String,List<String>> entry in dictionary)
+            {
+                var choice = new SemanticResultKey(entry.Key, new GrammarBuilder(new Choices(entry.Value.ToArray())));
+
+                grammarBuilder.Append(choice);
+            }
+
+            var grammar = new Grammar(grammarBuilder);
+
+            return grammar;
+        }
+        */
+
+        /// <summary>
+        /// Builds the grammar.
+        /// </summary>
+        /// <param name="dictionary"></param>
+        private Grammar BuildGrammar(Dictionary<String, List<String>> dictionary)
+        {
+            var choices = new Choices();
+
+            foreach (KeyValuePair<String, List<String>> entry in dictionary)
+            {
+                foreach (String choice in entry.Value)
+                {
+                    choices.Add(new SemanticResultValue(choice, entry.Key));
+                }
+            }
+
+            var grammarBuilder = new GrammarBuilder { Culture = this.RecognizerInfo.Culture };
+            grammarBuilder.Append(choices);
+
+            return new Grammar(grammarBuilder);
+        }
+
+        /// <summary>
+        /// Speech recognized event handler.
         /// </summary>
         /// <param name="sender">object sending the event.</param>
         /// <param name="e">event arguments.</param>
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            // Speech utterance confidence below which we treat speech as if it hadn't been heard
-            // const double ConfidenceThreshold = 0.3;
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::SpeechRecognized - " + e.Result.Semantics.Value.ToString());
 
+            if (e.Result.Confidence >= KinectSpeechRecognition.CONFIDENCE_THRESHOLD)
+            {
+                var value = e.Result.Semantics.Value.ToString();
 
-            //if (e.Result.Confidence >= ConfidenceThreshold)
-            //{
-            System.Console.WriteLine(e.Result.Semantics.Value.ToString());
-            recognisedWord = e.Result.Semantics.Value.ToString();
-
-            this.speechRecognizedEvent.Set();
-
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::SpeechRecognized() - " + recognisedWord);
-            //}
+                // Check if the recognized choice should match.
+                if (this.RecognizableChoices.Contains(value))
+                {
+                    this.SpeechRecognizedEvent.Set();
+                    this.RecognizedChoice = value;
+                }
+            }
         }
 
         /// <summary>
-        /// Handler for rejected speech events.
+        /// Waits a certain amount of time for a choice. 
         /// </summary>
-        /// <param name="sender">object sending the event.</param>
-        /// <param name="e">event arguments.</param>
-        private void SpeechRejected(object sender, SpeechRecognitionRejectedEventArgs e)
+        /// <param name="choices"></param>
+        /// <param name="timeOut">Time out in seconds.</param>
+        /// <returns></returns>
+        public string WaitForChoice(List<String> choices, int timeOut = 10)
         {
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::SpeechRejected()");
+            this.RecognizableChoices = choices;
+
+            this.SpeechRecognizedEvent = new AutoResetEvent(false);
+            this.SpeechRecognizedEvent.WaitOne(timeOut * 1000);
+
+            return this.RecognizedChoice;
         }
 
-        private static RecognizerInfo GetKinectRecognizer()
+        /// <summary>
+        /// Finds recognizer info.
+        /// </summary>
+        /// <returns></returns>
+        private RecognizerInfo FindRecognizerInfo()
         {
             foreach (RecognizerInfo recognizer in SpeechRecognitionEngine.InstalledRecognizers())
             {
                 string value;
                 recognizer.AdditionalInfo.TryGetValue("Kinect", out value);
-                if ("True".Equals(value, StringComparison.OrdinalIgnoreCase) && "en-US".Equals(recognizer.Culture.Name, StringComparison.OrdinalIgnoreCase))
+
+                if ("True".Equals(value, StringComparison.OrdinalIgnoreCase) &&
+                    "en-US".Equals(recognizer.Culture.Name, StringComparison.OrdinalIgnoreCase))
                 {
                     return recognizer;
                 }
@@ -140,87 +206,16 @@ namespace KungFuNao.Tools
             return null;
         }
 
-        internal string getAnswerToQuestion(string[] options)
+        //[Obsolete("Use WaitForChoice()",true)]
+        public string askConfirmation()
         {
-            setGrammar(options);
-            firedEvent = false;
-            while (!firedEvent)
-            {
-            }
-
-            return recognisedWord;
+            return "";
         }
 
-        internal string askConfirmation()
+        //[Obsolete("Use WaitForChoice()", true)]
+        public string askLeftRight()
         {
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::askConfirmation()");
-
-            speechEngine.UnloadAllGrammars();
-            string[] positiveOptions = new string[] { "yes", "sure", "yeah", "please", "ok", "okay" };
-            string[] negativeOptions = new string[] { "no", "nope" };
-            var options = new Choices();
-            foreach (string posive in positiveOptions)
-            {
-                options.Add(new SemanticResultValue(posive, "YES"));
-            }
-            foreach (string negative in negativeOptions)
-            {
-                options.Add(new SemanticResultValue(negative, "NO"));
-            }
-
-            var gb = new GrammarBuilder { Culture = ri.Culture };
-            gb.Append(options);
-
-            var g = new Grammar(gb);
-            
-            speechEngine.LoadGrammar(g);
-
-            this.speechRecognizedEvent.WaitOne(8000);
-
-            /*
-            Task task = Task.Factory.StartNew(() => DoTask());
-            task.Wait();
-     
-            firedEvent = false;
-            while (!firedEvent)
-            {
-                System.Diagnostics.Debug.WriteLine("Event has not fired...");
-                Thread.Sleep(100);
-            }
-             * */
-
-            System.Diagnostics.Debug.WriteLine("RECOGNIZED WORD:" + recognisedWord);
-
-            return recognisedWord;
-        }
-
-        internal string askLeftRight()
-        {
-            speechEngine.UnloadAllGrammars();
-            string[] positiveOptions = new string[] { "left" };
-            string[] negativeOptions = new string[] { "right" };
-            var options = new Choices();
-            foreach (string posive in positiveOptions)
-            {
-                options.Add(new SemanticResultValue(posive, "LEFT"));
-            }
-            foreach (string negative in negativeOptions)
-            {
-                options.Add(new SemanticResultValue(negative, "RIGHT"));
-            }
-
-            var gb = new GrammarBuilder { Culture = ri.Culture };
-            gb.Append(options);
-
-            var g = new Grammar(gb);
-            speechEngine.LoadGrammar(g);
-
-            firedEvent = false;
-            while (!firedEvent)
-            {
-            }
-
-            return recognisedWord;
+            return "";
         }
     }
 }

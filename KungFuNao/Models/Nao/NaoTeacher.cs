@@ -41,37 +41,59 @@ namespace KungFuNao.Models.Nao
             this.speech = speech;
             this.scenario = scenario;
 
-            worker.DoWork += worker_DoWork;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-
-
+            worker.DoWork += DoWork;
+            worker.RunWorkerCompleted += WorkerCompleted;
+            worker.WorkerSupportsCancellation = true;
         }
 
-        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        private void DoWork(object sender, DoWorkEventArgs e)
         {
-        
-                Debug.WriteLine("Hello");
-                welcomeUser();
-                explainCompleteKata();
-                explainEveryKataMotion();
-                int trialNumber = 0;
-                trainUser(trialNumber);
             
-            // run all background tasks here
+            System.Diagnostics.Debug.WriteLine("NaoTeacher: asking confirmation...");
+            String choice = this.speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+
+            if (KinectSpeechRecognition.CHOICE_POSITIVE.Equals(choice))
+            {
+                System.Diagnostics.Debug.WriteLine("NaoTeacher: Positive confirmation =)!");
+            }
+            else if (KinectSpeechRecognition.CHOICE_NEGATIVE.Equals(choice))
+            {
+                System.Diagnostics.Debug.WriteLine("NaoTeacher: Negative confirmation :(.");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("NaoTeacher: No confirmation...");
+            }
+
+            /*
+            // Should check the following every now and then:
+            if (this.worker.CancellationPending)
+            {
+                return;
+            }
+             * */
+           
+             /*
+            welcomeUser();
+            explainCompleteKata();
+            explainEveryKataMotion();
+            int trialNumber = 0;
+            trainUser(trialNumber);
+             * */
         }
 
-        private void worker_RunWorkerCompleted(object sender,
-                                               RunWorkerCompletedEventArgs e)
+        private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            //update ui once worker complete his work
         }
 
-        public void startProgram()
+        public void Start()
         {
-
             worker.RunWorkerAsync();
-            
+        }
 
+        public void Stop()
+        {
+            worker.CancelAsync();
         }
 
         public void trainUser(int trial)
