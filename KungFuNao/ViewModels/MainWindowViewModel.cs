@@ -12,25 +12,24 @@ using System.Runtime.Serialization;
 using System.Xml;
 using KungFuNao.Tools;
 using Aldebaran.Proxies;
+using System.Windows.Input;
+using Microsoft.TeamFoundation.MVVM;
 
 namespace KungFuNao.ViewModels
 {
     class MainWindowViewModel
     {
-        private Preferences preferences;
-        private Scenario scenario;
+        #region Fields
+        public Preferences Preferences { get; private set; }
+        public Scenario Scenario { get; private set; }
+        #endregion
 
-        public Preferences Preferences
+        #region Commands
+        public ICommand RunCommand
         {
-            get { return this.preferences; }
-            set { this.preferences = value; }
+            get { return new RelayCommand(Run); }
         }
-
-        public Scenario Scenario
-        {
-            get { return this.scenario; }
-            set { this.scenario = value; }
-        }
+        #endregion
 
         /// <summary>
         /// Constructor.
@@ -55,6 +54,11 @@ namespace KungFuNao.ViewModels
                 System.Diagnostics.Debug.WriteLine("Skeletons: " + scene.Skeletons.Count);
             }
              * */
+        }
+
+        private void Run()
+        {
+            System.Diagnostics.Debug.WriteLine("MainWindowViewModel::Run()");
         }
 
         /// <summary>

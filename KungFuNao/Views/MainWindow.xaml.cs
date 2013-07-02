@@ -25,6 +25,7 @@ using Aldebaran.Proxies;
 using System.Runtime.Serialization;
 using System.Xml;
 using KungFuNao.Models.Nao;
+using Microsoft.TeamFoundation.MVVM;
 
 namespace KungFuNao
 {
@@ -35,11 +36,12 @@ namespace KungFuNao
     {
         public enum Mode { Normal, Replay, Record };
 
+        #region Getters and setters.
         private KinectSensor kinectSensor;
         private Mode mode;
 
-        private Preferences preferences;
-        private Scenario scenario;
+        public Preferences Preferences { get; private set; }
+        public Scenario Scenario { get; private set; }
 
         private ColorStreamManager colorStreamManager;
         private SkeletonDisplayManager skeletonDisplayManager;
@@ -55,6 +57,11 @@ namespace KungFuNao
         private BehaviorManagerProxy behaviorManagerProxy;
 
         private NaoTeacher naoTeacher;
+        #endregion
+
+        #region Commands.
+        //public ICommand RunCommand { get { return new RelayCommand(Run); } }
+        #endregion
 
         /// <summary>
         /// Constructor.
@@ -91,7 +98,7 @@ namespace KungFuNao
             this.buttonRecord.Click += new RoutedEventHandler(this.onClickButtonRecord);
             this.buttonPlay.Click += new RoutedEventHandler(this.onClickButtonPlay);
             this.buttonStop.Click += new RoutedEventHandler(this.onClickButtonStop);
-            this.buttonRun.Click += new RoutedEventHandler(this.onClickButtonRun);
+            //this.buttonRun.Click += new RoutedEventHandler(this.onClickButtonRun);
 
             // Color stream.
             this.colorStreamManager = new ColorStreamManager();
@@ -108,12 +115,14 @@ namespace KungFuNao
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.kinectSensorSkeletonFrameReady);
 
             // Initialize proxies.
+            /*
             this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.speechRecognition = new KinectSpeechRecognition(this.kinectSensor);
 
             this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.scenario);
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
+             * */
         }
 
         /// <summary>
@@ -342,22 +351,8 @@ namespace KungFuNao
         public void OnWindowLoaded(object sender, EventArgs e)
         {
             this.kinectSensor.Start();
-            this.speechRecognition.start();
+            //this.speechRecognition.start();
         }
-
-        #region Getters and setters.
-        public Preferences Preferences
-        {
-            get { return this.preferences; }
-            set { this.preferences = value; }
-        }
-
-        public Scenario Scenario
-        {
-            get { return this.scenario; }
-            set { this.scenario = value; }
-        }
-        #endregion
     }
 }
 

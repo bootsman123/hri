@@ -25,7 +25,7 @@
 						<TextBlock Padding="4,0,0,0"><Run Text="Stop"/></TextBlock>
 					</StackPanel>
                 </Button>
-                <Button Name="buttonRun" Padding="2" Margin="4">
+                <Button Name="buttonRun" Padding="2" Margin="4" Command="{Binding RunCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/KungFuNao;component/Resources/bookmark.png" Stretch="None"/>
                         <TextBlock Padding="4,0,0,0"><Run Text="Run"/></TextBlock>
