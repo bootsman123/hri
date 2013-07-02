@@ -19,26 +19,15 @@ namespace KungFuNao.Tools
         private RecognizerInfo ri;
         private bool firedEvent;
         private String recognisedWord;
+        private AutoResetEvent speechRecognizedEvent;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="kinectSensor"></param>
         public KinectSpeechRecognition(KinectSensor kinectSensor)
         {
             this.sensor = kinectSensor;
-        }
-
-        public void setGrammar(string[] words)
-        {
-            speechEngine.UnloadAllGrammars();
-            var directions = new Choices();
-            foreach (string word in words)
-            {
-
-                directions.Add(new SemanticResultValue(word, word));
-            }
-            var gb = new GrammarBuilder { Culture = ri.Culture };
-            gb.Append(directions);
-
-            var g = new Grammar(gb);
-            speechEngine.LoadGrammar(g);
         }
 
         public void start()
@@ -61,6 +50,8 @@ namespace KungFuNao.Tools
 
             this.speechEngine.SetInputToAudioStream(sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
             this.speechEngine.RecognizeAsync(RecognizeMode.Multiple);
+
+            this.speechRecognizedEvent = new AutoResetEvent(false);
 
             System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::start() - End");
         }
@@ -86,6 +77,22 @@ namespace KungFuNao.Tools
             System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::stop() - End");
         }
 
+        public void setGrammar(string[] words)
+        {
+            speechEngine.UnloadAllGrammars();
+            var directions = new Choices();
+            foreach (string word in words)
+            {
+
+                directions.Add(new SemanticResultValue(word, word));
+            }
+            var gb = new GrammarBuilder { Culture = ri.Culture };
+            gb.Append(directions);
+
+            var g = new Grammar(gb);
+            speechEngine.LoadGrammar(g);
+        }
+
         /// <summary>
         /// Handler for recognized speech events.
         /// </summary>
@@ -93,8 +100,6 @@ namespace KungFuNao.Tools
         /// <param name="e">event arguments.</param>
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::SpeechRecognized()");
-
             // Speech utterance confidence below which we treat speech as if it hadn't been heard
             // const double ConfidenceThreshold = 0.3;
 
@@ -103,7 +108,10 @@ namespace KungFuNao.Tools
             //{
             System.Console.WriteLine(e.Result.Semantics.Value.ToString());
             recognisedWord = e.Result.Semantics.Value.ToString();
-            firedEvent = true;
+
+            this.speechRecognizedEvent.Set();
+
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::SpeechRecognized() - " + recognisedWord);
             //}
         }
 
@@ -166,18 +174,19 @@ namespace KungFuNao.Tools
             var g = new Grammar(gb);
             speechEngine.LoadGrammar(g);
 
+            this.speechRecognizedEvent.WaitOne(8000);
+
             /*
             Task task = Task.Factory.StartNew(() => DoTask());
             task.Wait();
-             * */
-
-
+     
             firedEvent = false;
             while (!firedEvent)
             {
                 System.Diagnostics.Debug.WriteLine("Event has not fired...");
                 Thread.Sleep(100);
             }
+             * */
 
             System.Diagnostics.Debug.WriteLine("RECOGNIZED WORD:" + recognisedWord);
 

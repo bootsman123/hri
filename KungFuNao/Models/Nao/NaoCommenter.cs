@@ -54,7 +54,7 @@ namespace KungFuNao.Models.Nao
         {
             behaviorManagerProxy.runBehavior("karate/stand");
             textToSpeechProxy.post.say("Welcome to my robodojo.");
-            behaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_WELCOME);
+            behaviorManagerProxy.post.runBehavior(NaoBehaviors.BEHAVIOR_WELCOME);
             textToSpeechProxy.post.say("I hope you are ready for your karate training!");
         }
         public void explainKarateToUser(KinectSpeechRecognition speech)
@@ -80,7 +80,6 @@ namespace KungFuNao.Models.Nao
             textToSpeechProxy.say("You performed very well! So much for todays lesson");
             textToSpeechProxy.say("Keep on this level of practice");
             askUserForFeedback(speech);
-
         }
 
         public void sayGoodbyeLongPerformance(KinectSpeechRecognition speech)
@@ -91,7 +90,6 @@ namespace KungFuNao.Models.Nao
 
         public void askUserForFeedback(KinectSpeechRecognition speech)
         {
-
             textToSpeechProxy.say("Did you enjoy this lesson?");
             string answer = speech.askConfirmation();
             switch (answer)

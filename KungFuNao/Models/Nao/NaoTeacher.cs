@@ -39,8 +39,11 @@ namespace KungFuNao.Models.Nao
 
         public void start()
         {
+            /*
             System.Diagnostics.Debug.WriteLine("NaoTeacher::start()");
             string word = this.speech.askConfirmation();
+            System.Diagnostics.Debug.WriteLine("Continuing..." + word);
+            */
             
             welcomeUser();
             explainCompleteKata();
@@ -87,7 +90,7 @@ namespace KungFuNao.Models.Nao
         private void welcomeUser()
         {
             naoCommenter.welcomeUser();
-            naoCommenter.explainKarateToUser(speech);
+            naoCommenter.explainKarateToUser(this.speech);
         }
 
         private double[] evaluateKata()

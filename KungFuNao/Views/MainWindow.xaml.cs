@@ -63,6 +63,7 @@ namespace KungFuNao
         {
             InitializeComponent();
 
+            this.Loaded += this.OnWindowLoaded;
             this.Closed += this.OnWindowClosed;
             this.DataContext = this;
 
@@ -90,6 +91,7 @@ namespace KungFuNao
             this.buttonRecord.Click += new RoutedEventHandler(this.onClickButtonRecord);
             this.buttonPlay.Click += new RoutedEventHandler(this.onClickButtonPlay);
             this.buttonStop.Click += new RoutedEventHandler(this.onClickButtonStop);
+            this.buttonRun.Click += new RoutedEventHandler(this.onClickButtonRun);
 
             // Color stream.
             this.colorStreamManager = new ColorStreamManager();
@@ -112,10 +114,6 @@ namespace KungFuNao
 
             this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.scenario);
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
-
-            this.kinectSensor.Start();
-            this.speechRecognition.start();
-            this.naoTeacher.start();
         }
 
         /// <summary>
@@ -191,6 +189,16 @@ namespace KungFuNao
                 this.kinectReplay.Stop();
                 this.mode = Mode.Normal;
             }
+        }
+
+        /// <summary>
+        /// On click button run.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void onClickButtonRun(object sender, RoutedEventArgs e)
+        {
+            this.naoTeacher.start();
         }
 
         private void replayColorImageFrameReady(object sender, ReplayColorImageFrameReadyEventArgs e)
@@ -324,6 +332,17 @@ namespace KungFuNao
 
             this.speechRecognition.stop();
             this.kinectSensor.Stop();
+        }
+
+        /// <summary>
+        /// On window loaded event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void OnWindowLoaded(object sender, EventArgs e)
+        {
+            this.kinectSensor.Start();
+            this.speechRecognition.start();
         }
 
         #region Getters and setters.
