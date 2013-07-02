@@ -1,14 +1,18 @@
 ﻿using Aldebaran.Proxies;
+using DynamicTimeWarping;
+using Kinect.Toolbox.Record;
 using KungFuNao.Tools;
+using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KungFuNao.Models.Nao
 {
-    class NaoTeacher
+    public class NaoTeacher
     {
         public static int MAXIMUM_AMOUNT_OF_TRIALS = 3;
         public static double PERFORMANCE_TRESHOLD_FOR_FINALIZING_LESSON = 0.3;
@@ -19,6 +23,10 @@ namespace KungFuNao.Models.Nao
 
         private NaoCommenter naoCommenter;
         private Scenario scenario;
+
+        private Stream recordStream;
+        private KinectRecorder kinectRecorder;
+        private bool isRecording = false;
 
         public NaoTeacher(TextToSpeechProxy textToSpeechProxy, BehaviorManagerProxy behaviorManagerProxy, KinectSpeechRecognition speech, Scenario scenario)
         {
@@ -38,6 +46,7 @@ namespace KungFuNao.Models.Nao
             trainUser(trialNumber);
 
         }
+
         public void trainUser(int trial)
         {
             double[] performances = evaluateKata();
@@ -66,8 +75,6 @@ namespace KungFuNao.Models.Nao
             naoCommenter.explainWhileMoving("Your " + worstScene.Name + " needs some improvement, let me explain the " + worstScene.Name + " again");
             worstScene.giveFeedbackToUser(textToSpeechProxy, behaviorManagerProxy);
             worstScene.explainToUser(textToSpeechProxy, behaviorManagerProxy, speech);
-
-
         }
 
         private bool goodPerformance(double[] performances)
@@ -81,9 +88,9 @@ namespace KungFuNao.Models.Nao
             naoCommenter.explainKarateToUser(speech);
         }
 
-
         private double[] evaluateKata()
         {
+            var distance = new SkeletonDistance();
 
             naoCommenter.startEvaluationOfWholeKata();
 
@@ -91,14 +98,16 @@ namespace KungFuNao.Models.Nao
             int x = 0;
             foreach (Scene scene in this.scenario)
             {
-                //Program.startRecording();
+                this.startRecording();
                 scene.performDefault(textToSpeechProxy, behaviorManagerProxy);
-                //Program.stopRecording();
-                //performance[x++] = scene.getPerformance();
+                this.stopRecording();
+
+                // Load data.
+                List<Skeleton> skeletons = this.loadRecording();
+                performance[x++] = DTW<Skeleton>.Distance(skeletons, scene.Skeletons, distance);
             }
             return performance;
         }
-
 
         private void explainCompleteKata()
         {
@@ -126,5 +135,51 @@ namespace KungFuNao.Models.Nao
             }
         }
 
+        private void startRecording()
+        {
+            // Start recording.
+            this.recordStream = new BufferedStream(new FileStream(Preferences.KINECT_DATA_FILE, FileMode.Create));
+            this.kinectRecorder = new KinectRecorder(KinectRecordOptions.Skeletons, this.recordStream);
+
+            this.isRecording = true;
+        }
+
+        private void stopRecording()
+        {
+            // Stop recording.
+            this.isRecording = false;
+
+            this.kinectRecorder.Stop();
+        }
+
+        private List<Skeleton> loadRecording()
+        {
+            using (Stream stream = new BufferedStream(new FileStream(Preferences.KINECT_DATA_FILE, FileMode.Open)))
+            {
+                return Tools.SkeletonRecordingConverter.FromStream(stream);
+            }
+        }
+
+        /// <summary>
+        /// On skeleton frame ready.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void kinectSensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+        {
+            using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
+            {
+                if (skeletonFrame == null)
+                {
+                    return;
+                }
+
+                // Record?
+                if (this.isRecording)
+                {
+                    this.kinectRecorder.Record(skeletonFrame);
+                }
+            }
+        }
     }
 }

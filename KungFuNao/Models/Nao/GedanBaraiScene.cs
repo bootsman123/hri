@@ -3,15 +3,17 @@ using KungFuNao.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KungFuNao.Models.Nao
 {
+    [DataContract]
     public class GedanBaraiScene : Scene
     {
-        public GedanBaraiScene(string name, string fileName, Score score)
-            : base(name, fileName, score)
+        public GedanBaraiScene(string fileName, Score score)
+            : base("Gedan Barai", fileName, score)
         {
         }
 

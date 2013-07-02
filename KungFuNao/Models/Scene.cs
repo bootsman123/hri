@@ -11,9 +11,13 @@ using KungFuNao.Models;
 using System.IO;
 using Aldebaran.Proxies;
 using KungFuNao.Tools;
+using KungFuNao.Models.Nao;
 
 namespace KungFuNao
 {
+    [KnownType(typeof(LeftHandPunchScene))]
+    [KnownType(typeof(GedanBaraiScene))]
+    [KnownType(typeof(RightHandPunchScene))]
     [DataContract]
     public abstract class Scene
     {

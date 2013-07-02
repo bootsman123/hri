@@ -24,6 +24,7 @@ using KungFuNao.Tools;
 using Aldebaran.Proxies;
 using System.Runtime.Serialization;
 using System.Xml;
+using KungFuNao.Models.Nao;
 
 namespace KungFuNao
 {
@@ -53,6 +54,8 @@ namespace KungFuNao
         private TextToSpeechProxy textToSpeechProxy;
         private BehaviorManagerProxy behaviorManagerProxy;
 
+        private NaoTeacher naoTeacher;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -66,6 +69,10 @@ namespace KungFuNao
             this.Preferences = new Preferences();
 
             this.LoadData();
+
+            this.Scenario.Add(new LeftHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
+            this.Scenario.Add(new GedanBaraiScene("C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
+            this.Scenario.Add(new RightHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(30, 5)));
 
             // Find Kinect sensor.
             this.kinectSensor = KinectSensor.KinectSensors.FirstOrDefault(e => e.Status == KinectStatus.Connected);
@@ -104,6 +111,9 @@ namespace KungFuNao
             this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.speechRecognition = new KinectSpeechRecognition(this.kinectSensor);
+
+            this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.scenario);
+            this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
         }
 
         /// <summary>
@@ -128,8 +138,8 @@ namespace KungFuNao
             {
                 System.Diagnostics.Debug.WriteLine("Stop recording...");
 
-                this.kinectRecorder.Stop();
                 this.mode = Mode.Normal;
+                this.kinectRecorder.Stop();
             }
             // Start recording.
             else
