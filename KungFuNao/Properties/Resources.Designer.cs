@@ -63,9 +63,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap boxing_glove {
+        internal static System.Drawing.Bitmap bookmark {
             get {
-                object obj = ResourceManager.GetObject("boxing_glove", resourceCulture);
+                object obj = ResourceManager.GetObject("bookmark", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock {
+        internal static System.Drawing.Bitmap control_fast_forward {
             get {
-                object obj = ResourceManager.GetObject("clock", resourceCulture);
+                object obj = ResourceManager.GetObject("control_fast_forward", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +83,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_add {
+        internal static System.Drawing.Bitmap control_pause {
             get {
-                object obj = ResourceManager.GetObject("clock_add", resourceCulture);
+                object obj = ResourceManager.GetObject("control_pause", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +93,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_delete {
+        internal static System.Drawing.Bitmap control_play {
             get {
-                object obj = ResourceManager.GetObject("clock_delete", resourceCulture);
+                object obj = ResourceManager.GetObject("control_play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +103,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_edit {
+        internal static System.Drawing.Bitmap control_record {
             get {
-                object obj = ResourceManager.GetObject("clock_edit", resourceCulture);
+                object obj = ResourceManager.GetObject("control_record", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,9 +113,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_pause {
+        internal static System.Drawing.Bitmap control_repeat {
             get {
-                object obj = ResourceManager.GetObject("clock_pause", resourceCulture);
+                object obj = ResourceManager.GetObject("control_repeat", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -123,9 +123,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_play {
+        internal static System.Drawing.Bitmap control_rewind {
             get {
-                object obj = ResourceManager.GetObject("clock_play", resourceCulture);
+                object obj = ResourceManager.GetObject("control_rewind", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,129 +133,9 @@ namespace KungFuNao.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap clock_red {
+        internal static System.Drawing.Bitmap control_stop {
             get {
-                object obj = ResourceManager.GetObject("clock_red", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap clock_stop {
-            get {
-                object obj = ResourceManager.GetObject("clock_stop", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_end_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_end_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_pause_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_pause_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_play_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_play_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_power_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_power_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_repeat_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_repeat_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_start_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_start_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap control_stop_blue {
-            get {
-                object obj = ResourceManager.GetObject("control_stop_blue", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap movies {
-            get {
-                object obj = ResourceManager.GetObject("movies", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap stopwatch_finish {
-            get {
-                object obj = ResourceManager.GetObject("stopwatch_finish", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap stopwatch_pause {
-            get {
-                object obj = ResourceManager.GetObject("stopwatch_pause", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap stopwatch_start {
-            get {
-                object obj = ResourceManager.GetObject("stopwatch_start", resourceCulture);
+                object obj = ResourceManager.GetObject("control_stop", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

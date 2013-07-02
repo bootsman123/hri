@@ -1,0 +1,79 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KungFuNao"
+        mc:Ignorable="d"
+        x:Class="KungFuNao.MainWindow"
+        Title="Kung Fu Nao"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize">
+    <DockPanel LastChildFill="True">
+        <!-- Control buttons. -->
+		<DockPanel LastChildFill="False" DockPanel.Dock="Bottom">
+			<StackPanel Name="controlButtonGroup" Orientation="Horizontal" DockPanel.Dock="Left">
+                <Button Name="buttonPlay" Padding="2" Margin="4">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/KungFuNao;component/Resources/control_play.png" Stretch="None"/>
+                        <TextBlock Padding="4,0,0,0"><Run Text="Play"/></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Name="buttonStop" Padding="2" Margin="4">
+					<StackPanel Orientation="Horizontal">
+						<Image Source="/KungFuNao;component/Resources/control_stop.png" Stretch="None"/>
+						<TextBlock Padding="4,0,0,0"><Run Text="Stop"/></TextBlock>
+					</StackPanel>
+				</Button>
+			</StackPanel>
+			<StackPanel Name="recordButtonGroup" Orientation="Horizontal" DockPanel.Dock="Right">
+				<!--<ComboBox Name="scenarioComboBox"/>-->
+				<Button Name="buttonRecord" Padding="2" Margin="4">
+					<StackPanel Orientation="Horizontal">
+						<Image Name="buttonRecordImage" Source="/KungFuNao;component/Resources/control_record.png" Stretch="None"/>
+						<TextBlock Padding="4,0,0,0"><Run Text="Record"/></TextBlock>
+					</StackPanel>
+				</Button>
+			</StackPanel>
+		</DockPanel>
+
+        <!-- Control slider. -->
+        <DockPanel DockPanel.Dock="Bottom">
+            <Label Name="labelElapsedTime" DockPanel.Dock="Left" Content="--:--"></Label>
+            <Label Name="labelTotalTime" DockPanel.Dock="Right" Content="--:--"></Label>
+            <Slider
+                Name="controlSlider"
+                DockPanel.Dock="Bottom"
+                Margin="4"
+                Minimum="0"
+                Maximum="100"
+                TickFrequency="5"
+                TickPlacement="BottomRight">
+            </Slider>
+        </DockPanel>
+        
+        <!-- Side panel. -->
+        <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Width="200">
+            <Label Content="Scenario" FontWeight="Bold" FontSize="14px"/>
+            <ListBox Name="scenarioListBox" ItemsSource="{Binding Scenario}" BorderBrush="Transparent">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}"/>
+                        <!--<Image Source="{Binding TechniqueImageData}"/>-->
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <!-- Kinect streams. -->
+        <Grid Name="imageGrid">
+        	<Image
+                Name="imageKinect"
+                Width="{Binding Path=Preferences.ImageWidth}"
+                Height="{Binding Path=Preferences.ImageHeight}"/>
+        	<Canvas
+                Background="Transparent"
+                Name="imageCanvas"/>
+        </Grid>
+    </DockPanel>
+</Window>
