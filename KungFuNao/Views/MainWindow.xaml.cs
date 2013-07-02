@@ -70,9 +70,9 @@ namespace KungFuNao
 
             this.LoadData();
 
-            this.Scenario.Add(new LeftHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
-            this.Scenario.Add(new GedanBaraiScene("C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
-            this.Scenario.Add(new RightHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(30, 5)));
+            //this.Scenario.Add(new LeftHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
+            //this.Scenario.Add(new GedanBaraiScene("C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
+            //this.Scenario.Add(new RightHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(30, 5)));
 
             // Find Kinect sensor.
             this.kinectSensor = KinectSensor.KinectSensors.FirstOrDefault(e => e.Status == KinectStatus.Connected);
@@ -105,8 +105,6 @@ namespace KungFuNao
             this.kinectSensor.SkeletonStream.Enable();
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.kinectSensorSkeletonFrameReady);
 
-            this.kinectSensor.Start();
-
             // Initialize proxies.
             this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
@@ -114,6 +112,10 @@ namespace KungFuNao
 
             this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.scenario);
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
+
+            this.kinectSensor.Start();
+            this.speechRecognition.start();
+            this.naoTeacher.start();
         }
 
         /// <summary>
@@ -319,6 +321,9 @@ namespace KungFuNao
         {
             // Save data.
             this.SaveData();
+
+            this.speechRecognition.stop();
+            this.kinectSensor.Stop();
         }
 
         #region Getters and setters.

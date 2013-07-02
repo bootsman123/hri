@@ -37,14 +37,16 @@ namespace KungFuNao.Models.Nao
             this.scenario = scenario;
         }
 
-        public void startProgram()
+        public void start()
         {
+            System.Diagnostics.Debug.WriteLine("NaoTeacher::start()");
+            string word = this.speech.askConfirmation();
+            
             welcomeUser();
             explainCompleteKata();
             explainEveryKataMotion();
             int trialNumber = 0;
             trainUser(trialNumber);
-
         }
 
         public void trainUser(int trial)
@@ -90,10 +92,9 @@ namespace KungFuNao.Models.Nao
 
         private double[] evaluateKata()
         {
-            var distance = new SkeletonDistance();
-
             naoCommenter.startEvaluationOfWholeKata();
 
+            var distance = new SkeletonDistance();
             double[] performance = new double[3];
             int x = 0;
             foreach (Scene scene in this.scenario)
