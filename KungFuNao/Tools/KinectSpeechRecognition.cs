@@ -172,6 +172,7 @@ namespace KungFuNao.Tools
             gb.Append(options);
 
             var g = new Grammar(gb);
+            
             speechEngine.LoadGrammar(g);
 
             this.speechRecognizedEvent.WaitOne(8000);
