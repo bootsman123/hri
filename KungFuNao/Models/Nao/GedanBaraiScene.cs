@@ -73,7 +73,7 @@ namespace KungFuNao.Models.Nao
         private void explanation(Proxies Proxies)
         {
             // First step.
-            Proxies.TextToSpeechProxy.post.say("Bring your right hand towards your left ear.");
+            Proxies.TextToSpeechProxy.say("Bring your right hand towards your left ear.");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1);
             Proxies.TextToSpeechProxy.say("");
             Proxies.TextToSpeechProxy.say("While moving your right hand you also need to move your left arm forward.");
