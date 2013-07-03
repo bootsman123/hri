@@ -36,9 +36,9 @@ namespace KungFuNao.Models
             this.KinectSensor = KinectSensor.KinectSensors.FirstOrDefault(e => e.Status == KinectStatus.Connected);
             this.KinectSpeechRecognition = new KinectSpeechRecognition(this.KinectSensor);
 
-            //this.TextToSpeechProxy = new TextToSpeechProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
-            //this.BehaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
-            //this.LedsProxy = new LedsProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
+            this.TextToSpeechProxy = new TextToSpeechProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
+            this.BehaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
+            this.LedsProxy = new LedsProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
         }
 
         /// <summary>

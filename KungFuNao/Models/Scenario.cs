@@ -15,7 +15,7 @@ namespace KungFuNao
     public class Scenario : IEnumerable<Scene>
     {
         [DataMember]
-        private List<Scene> scenes = new List<Scene>();
+        private List<Scene> Scenes = new List<Scene>();
 
         public Scenario()
         {
@@ -23,22 +23,32 @@ namespace KungFuNao
 
         public void Add(Scene scene)
         {
-            this.scenes.Add(scene);
+            this.Scenes.Add(scene);
+        }
+
+        public double TotalMinimumScore()
+        {
+            return this.Scenes.Sum(scene => scene.Score.Mean - scene.Score.Deviation);
+        }
+
+        public double TotalMaximumScore()
+        {
+            return this.Scenes.Sum(scene => scene.Score.Mean + scene.Score.Deviation);
         }
 
         public int Size()
         {
-            return this.scenes.Count;
+            return this.Scenes.Count;
         }
 
         public IEnumerator<Scene> GetEnumerator()
         {
-            return this.scenes.GetEnumerator();
+            return this.Scenes.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.scenes.GetEnumerator();
+            return this.Scenes.GetEnumerator();
         }
     }
 }

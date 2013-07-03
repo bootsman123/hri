@@ -19,7 +19,6 @@ namespace KungFuNao.Models.Nao
         private readonly BackgroundWorker Worker = new BackgroundWorker();
 
         public static int MAXIMUM_AMOUNT_OF_TRIALS = 3;
-        public static double PERFORMANCE_TRESHOLD_FOR_FINALIZING_LESSON = 0.3;
 
         #region Fields.
         private Preferences Preferences;
@@ -91,9 +90,9 @@ namespace KungFuNao.Models.Nao
 
         public void trainUser(int trial)
         {
-            double[] performances = evaluateKata();
+            List<Double> performances = this.EvaluateScenario();
 
-            if (goodPerformance(performances))
+            if (this.HasGoodPerformance(performances))
             {
                 this.NaoCommenter.sayGoodbyeGoodPerformance();
             }
@@ -108,20 +107,28 @@ namespace KungFuNao.Models.Nao
             }
         }
 
-        private void giveSpecificFeedback(double[] performances)
+        private void giveSpecificFeedback(List<Double> performances)
         {
-            double minimum = performances.Min();
-            int location = Array.IndexOf(performances, minimum);
-            Scene worstScene = this.Scenario.ElementAt(location);
+            int index = performances.IndexOf(performances.Min());
+            Scene worstScene = this.Scenario.ElementAt(index);
 
             this.NaoCommenter.explainWhileMoving("Your " + worstScene.Name + " needs some improvement, let me explain the " + worstScene.Name + " again");
             worstScene.giveFeedbackToUser(this.Proxies);
             worstScene.explainToUser(this.Proxies);
         }
 
-        private bool goodPerformance(double[] performances)
+        private bool HasGoodPerformance(List<Double> performances)
         {
-            return performances.Sum() > NaoTeacher.PERFORMANCE_TRESHOLD_FOR_FINALIZING_LESSON;
+            double totalPerformance = performances.Sum();
+            double totalMinimumScore = this.Scenario.TotalMinimumScore();
+            double totalMaximumScore = this.Scenario.TotalMaximumScore();
+
+            System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total performance: " + totalPerformance);
+            System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total performance: " + totalMinimumScore);
+            System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total performance: " + totalMaximumScore);
+
+            return (totalPerformance >= totalMinimumScore &&
+                    totalPerformance <= totalMaximumScore);
         }
 
         private void welcomeUser()
@@ -130,25 +137,30 @@ namespace KungFuNao.Models.Nao
             this.NaoCommenter.explainKarateToUser();
         }
 
-        private double[] evaluateKata()
+        private List<Double> EvaluateScenario()
         {
-            var distance = new SkeletonDistance();
+            System.Diagnostics.Debug.WriteLine("NaoTeacher::evaluateKata()");
 
             this.NaoCommenter.startEvaluationOfWholeKata();
 
-            double[] performance = new double[3];
-            int x = 0;
+            var performances = new List<Double>();
+            var distance = new SkeletonDistance();
+
             foreach (Scene scene in this.Scenario)
             {
-                this.startRecording();
+                this.StartRecording();
                 scene.performDefault(this.Proxies);
-                this.stopRecording();
+                this.StopRecording();
 
                 // Load data.
-                List<Skeleton> skeletons = this.loadRecording();
-                performance[x++] = DTW<Skeleton>.Distance(skeletons, scene.Skeletons, distance);
+                List<Skeleton> skeletons = this.LoadRecording();
+
+                // Calculate performance.
+                var performance = DTW<Skeleton>.Distance(skeletons, scene.Skeletons, distance);
+                performances.Add(performance);
             }
-            return performance;
+
+            return performances;
         }
 
         private void explainCompleteKata()
@@ -175,7 +187,10 @@ namespace KungFuNao.Models.Nao
             }
         }
 
-        private void startRecording()
+        /// <summary>
+        /// Start recording.
+        /// </summary>
+        private void StartRecording()
         {
             // Start recording.
             this.RecordStream = new BufferedStream(new FileStream(this.Preferences.KinectDataFile, FileMode.Create));
@@ -184,7 +199,10 @@ namespace KungFuNao.Models.Nao
             this.IsRecording = true;
         }
 
-        private void stopRecording()
+        /// <summary>
+        /// Stop recording.
+        /// </summary>
+        private void StopRecording()
         {
             // Stop recording.
             this.IsRecording = false;
@@ -192,7 +210,11 @@ namespace KungFuNao.Models.Nao
             this.KinectRecorder.Stop();
         }
 
-        private List<Skeleton> loadRecording()
+        /// <summary>
+        /// Load recording.
+        /// </summary>
+        /// <returns></returns>
+        private List<Skeleton> LoadRecording()
         {
             using (Stream stream = new BufferedStream(new FileStream(this.Preferences.KinectDataFile, FileMode.Open)))
             {
