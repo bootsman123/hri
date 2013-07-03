@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -96,7 +97,7 @@ namespace KungFuNao.Models.Nao
 
         private void GiveFeedbackOnScene(List<Double> performances)
         {
-            int index = performances.IndexOf(performances.Min());
+            int index = performances.IndexOf(performances.Max());
             Scene worstScene = this.Scenario.ElementAt(index);
 
             this.NaoCommenter.explainWhileMoving("Your " + worstScene.Name + " needs some improvement, let me explain the " + worstScene.Name + " again");
@@ -177,6 +178,7 @@ namespace KungFuNao.Models.Nao
         /// <summary>
         /// Start recording.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private void StartRecording()
         {
             // Start recording.
@@ -189,6 +191,7 @@ namespace KungFuNao.Models.Nao
         /// <summary>
         /// Stop recording.
         /// </summary>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private void StopRecording()
         {
             // Stop recording.
