@@ -43,7 +43,7 @@ namespace KungFuNao.Models.Nao
                 this.performDefault(tts, bproxy);
 
                 tts.say("Do you understand this motion now?");
-                string answer = speech.askConfirmation();
+                string answer = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
                 switch (answer)
                 {
                     case "YES":
@@ -52,7 +52,7 @@ namespace KungFuNao.Models.Nao
                     case "NO":
                         tts.say("Too bad, are you having trouble with your left or your right arm?");
 
-                        string answer2 = speech.askLeftRight();
+                        string answer2 = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_LEFT_RIGHT);
                         switch (answer2)
                         {
                             case "LEFT":
