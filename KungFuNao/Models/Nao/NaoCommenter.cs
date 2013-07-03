@@ -122,6 +122,10 @@ namespace KungFuNao.Models.Nao
         {
             textToSpeechProxy.post.say(toExplainText);
         }
+        public void explainWithMovement(String toExplainText, String nameOfMovement){
+            this.textToSpeechProxy.post.say(toExplainText);
+            this.behaviorManagerProxy.runBehavior(nameOfMovement);
+        }
 
         public void startEvaluationOfWholeKata()
         {
