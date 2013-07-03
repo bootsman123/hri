@@ -17,10 +17,14 @@ namespace KungFuNao.Tools
         private KinectSensor sensor;
         private SpeechRecognitionEngine speechEngine;
         private RecognizerInfo ri;
-        bool firedEvent;
-        String recognisedWord;
+        private bool firedEvent;
+        private String recognisedWord;
         private AutoResetEvent speechRecognizedEvent;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="kinectSensor"></param>
         public KinectSpeechRecognition(KinectSensor kinectSensor)
         {
             this.sensor = kinectSensor;
@@ -28,61 +32,49 @@ namespace KungFuNao.Tools
 
         public void start()
         {
-            /*
-            // Look through all sensors and start the first connected one.
-            // This requires that a Kinect is connected at the time of app startup.
-            // To make your app robust against plug/unplug, 
-            // it is recommended to use KinectSensorChooser provided in Microsoft.Kinect.Toolkit (See components in Toolkit Browser).
-            foreach (var potentialSensor in KinectSensor.KinectSensors)
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::start() - Begin");
+
+            this.ri = GetKinectRecognizer();
+
+            if (this.ri == null)
             {
-                if (potentialSensor.Status == KinectStatus.Connected)
-                {
-                    this.sensor = potentialSensor;
-                    break;
-                }
+                return;
+            }
+
+            this.speechEngine = new SpeechRecognitionEngine(ri.Id);
+
+            this.setGrammar(new string[] { "forward", "backward" });
+
+            this.speechEngine.SpeechRecognized += SpeechRecognized;
+            this.speechEngine.SpeechRecognitionRejected += SpeechRejected;
+
+            this.speechEngine.SetInputToAudioStream(sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
+            this.speechEngine.RecognizeAsync(RecognizeMode.Multiple);
+
+            this.speechRecognizedEvent = new AutoResetEvent(false);
+
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::start() - End");
+        }
+
+        public void stop()
+        {
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::stop() - Begin");
+
+            if (null != this.speechEngine)
+            {
+                this.speechEngine.SpeechRecognized -= SpeechRecognized;
+                this.speechEngine.SpeechRecognitionRejected -= SpeechRejected;
+                this.speechEngine.RecognizeAsyncStop();
             }
 
             if (null != this.sensor)
             {
-                try
-                {
-                    // Start the sensor!
-                    this.sensor.Start();
-                }
-                catch (IOException)
-                {
-                    // Some other application is streaming from the same Kinect sensor
-                    this.sensor = null;
-                }
+                this.sensor.AudioSource.Stop();
+
+                this.sensor = null;
             }
-             * */
 
-            this.speechRecognizedEvent = new AutoResetEvent(false);
-
-            ri = GetKinectRecognizer();
-
-            if (null != ri)
-            {
-
-                this.speechEngine = new SpeechRecognitionEngine(ri.Id);
-
-
-                setGrammar(new string[] { "forward", "backward" });
-
-
-                speechEngine.SpeechRecognized += SpeechRecognized;
-                speechEngine.SpeechRecognitionRejected += SpeechRejected;
-
-
-                speechEngine.SetInputToAudioStream(
-                    sensor.AudioSource.Start(), new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
-                speechEngine.RecognizeAsync(RecognizeMode.Multiple);
-                System.Console.WriteLine("Recognition started");
-            }
-            else
-            {
-                System.Console.WriteLine("No recognizer found");
-            }
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::stop() - End");
         }
 
         public void setGrammar(string[] words)
@@ -99,25 +91,6 @@ namespace KungFuNao.Tools
 
             var g = new Grammar(gb);
             speechEngine.LoadGrammar(g);
-
-        }
-
-        public void end()
-        {
-            if (null != this.sensor)
-            {
-                this.sensor.AudioSource.Stop();
-
-                this.sensor.Stop();
-                this.sensor = null;
-            }
-
-            if (null != this.speechEngine)
-            {
-                this.speechEngine.SpeechRecognized -= SpeechRecognized;
-                this.speechEngine.SpeechRecognitionRejected -= SpeechRejected;
-                this.speechEngine.RecognizeAsyncStop();
-            }
         }
 
         /// <summary>
@@ -127,7 +100,6 @@ namespace KungFuNao.Tools
         /// <param name="e">event arguments.</param>
         private void SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
         {
-            System.Console.WriteLine("Something recognized");
             // Speech utterance confidence below which we treat speech as if it hadn't been heard
             // const double ConfidenceThreshold = 0.3;
 
@@ -136,8 +108,10 @@ namespace KungFuNao.Tools
             //{
             System.Console.WriteLine(e.Result.Semantics.Value.ToString());
             recognisedWord = e.Result.Semantics.Value.ToString();
-            firedEvent = true;
+
             this.speechRecognizedEvent.Set();
+
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::SpeechRecognized() - " + recognisedWord);
             //}
         }
 
@@ -148,7 +122,7 @@ namespace KungFuNao.Tools
         /// <param name="e">event arguments.</param>
         private void SpeechRejected(object sender, SpeechRecognitionRejectedEventArgs e)
         {
-            System.Console.WriteLine("Speech rejected!");
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::SpeechRejected()");
         }
 
         private static RecognizerInfo GetKinectRecognizer()
@@ -172,13 +146,15 @@ namespace KungFuNao.Tools
             firedEvent = false;
             while (!firedEvent)
             {
-
             }
+
             return recognisedWord;
         }
 
         internal string askConfirmation()
         {
+            System.Diagnostics.Debug.WriteLine("KinectSpeechRecognition::askConfirmation()");
+
             speechEngine.UnloadAllGrammars();
             string[] positiveOptions = new string[] { "yes", "sure", "yeah", "please", "ok", "okay" };
             string[] negativeOptions = new string[] { "no", "nope" };
@@ -198,11 +174,23 @@ namespace KungFuNao.Tools
             var g = new Grammar(gb);
             
             speechEngine.LoadGrammar(g);
-            
 
+            this.speechRecognizedEvent.WaitOne(8000);
+
+            /*
+            Task task = Task.Factory.StartNew(() => DoTask());
+            task.Wait();
+     
             firedEvent = false;
-            this.speechRecognizedEvent.WaitOne(10000);
-           
+            while (!firedEvent)
+            {
+                System.Diagnostics.Debug.WriteLine("Event has not fired...");
+                Thread.Sleep(100);
+            }
+             * */
+
+            System.Diagnostics.Debug.WriteLine("RECOGNIZED WORD:" + recognisedWord);
+
             return recognisedWord;
         }
 
@@ -227,13 +215,11 @@ namespace KungFuNao.Tools
             var g = new Grammar(gb);
             speechEngine.LoadGrammar(g);
 
-
-
             firedEvent = false;
             while (!firedEvent)
             {
-
             }
+
             return recognisedWord;
         }
     }

@@ -24,10 +24,15 @@
 						<Image Source="/KungFuNao;component/Resources/control_stop.png" Stretch="None"/>
 						<TextBlock Padding="4,0,0,0"><Run Text="Stop"/></TextBlock>
 					</StackPanel>
-				</Button>
-			</StackPanel>
+                </Button>
+                <Button Name="buttonRun" Padding="2" Margin="4">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/KungFuNao;component/Resources/bookmark.png" Stretch="None"/>
+                        <TextBlock Padding="4,0,0,0"><Run Text="Run"/></TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
 			<StackPanel Name="recordButtonGroup" Orientation="Horizontal" DockPanel.Dock="Right">
-				<!--<ComboBox Name="scenarioComboBox"/>-->
 				<Button Name="buttonRecord" Padding="2" Margin="4">
 					<StackPanel Orientation="Horizontal">
 						<Image Name="buttonRecordImage" Source="/KungFuNao;component/Resources/control_record.png" Stretch="None"/>
