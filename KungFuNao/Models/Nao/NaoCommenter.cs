@@ -155,9 +155,8 @@ namespace KungFuNao.Models.Nao
 
         public void startEvaluationOfWholeKata()
         {
-            this.Proxies.TextToSpeechProxy.post.say("Hopefully you understand the whole technique, now let's see what you are able to do");
+            this.Proxies.TextToSpeechProxy.post.say("Hopefully you understand the whole technique, now let's see what you are able to do. Please follow along while we both perform the complete technique");
             this.Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_ACT_EXCITED);
-            this.explainWhileMoving("Please follow along while we both perform the complete technique");
             this.explainWhileMoving("I will watch you closely to determine how well you perform the technique, So make sure you make the same movements as I do.");
             this.Proxies.TextToSpeechProxy.say("");
         }
