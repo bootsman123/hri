@@ -14,7 +14,7 @@ namespace KungFuNao.Tools
 {
     public class KinectSpeechRecognition
     {
-        public const double CONFIDENCE_THRESHOLD = 0.6;
+        public const double CONFIDENCE_THRESHOLD = 0.7;
 
         public const String CHOICE_POSITIVE = "POSITIVE";
         public const String CHOICE_NEGATIVE = "NEGATIVE";

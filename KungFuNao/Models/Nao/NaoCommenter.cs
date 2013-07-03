@@ -69,7 +69,7 @@ namespace KungFuNao.Models.Nao
             this.ExplainWhileMoving("Robot Karate is a special martial art where the user performs movements to defend himself againest evil robots.");
             this.ExplainWhileFlexing("When performing a lot of robot karate you will become stronger");
             this.ExplainWhileMoving("I will try to learn you how to perform some robot karate movements!");
-            this.ExplainWhileMoving("Do you have any experience with robot karate?");
+            this.Proxies.TextToSpeechProxy.say("Do you have any experience with robot karate?");
             this.StartRotatingEars();
             string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
             this.StopRotatingEars();
@@ -103,8 +103,8 @@ namespace KungFuNao.Models.Nao
         }
         private void StartRotatingEars()
         {
-            LedsProxy leds = Proxies.LedsProxy;
-            leds.on("EarLeds");
+            this.Proxies.BehaviorManagerProxy.post.runBehavior("karate/speech_recognition_led");
+            this.Proxies.BehaviorManagerProxy.post.runBehavior("karate/start-ask");
         }
 
         /// <summary>
@@ -112,7 +112,8 @@ namespace KungFuNao.Models.Nao
         /// </summary>
         private void StopRotatingEars()
         {
-            this.Proxies.LedsProxy.off("EarLeds");
+            this.Proxies.BehaviorManagerProxy.post.stopBehavior("karate/speech_recognition_led");
+            this.Proxies.BehaviorManagerProxy.post.runBehavior("karate/stand");
         }
         
 
