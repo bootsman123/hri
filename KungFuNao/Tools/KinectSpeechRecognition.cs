@@ -177,18 +177,13 @@ namespace KungFuNao.Tools
         /// <returns></returns>
         public string WaitForChoice(List<String> choices, int timeOut = 10)
         {
+            
             this.RecognizableChoices = choices;
 
             this.SpeechRecognizedEvent = new AutoResetEvent(false);
             this.SpeechRecognizedEvent.WaitOne(timeOut * 1000);
 
-            var choice = this.RecognizedChoice;
-
-            // Reset the recognized choice.
-            this.RecognizedChoice = "";
-            this.RecognizableChoices = new List<String>();
-
-            return choice;
+            return this.RecognizedChoice;
         }
 
         /// <summary>
@@ -212,16 +207,6 @@ namespace KungFuNao.Tools
             return null;
         }
 
-        [Obsolete("Use WaitForChoice()",true)]
-        public string askConfirmation()
-        {
-            return "";
-        }
 
-        [Obsolete("Use WaitForChoice()", true)]
-        public string askLeftRight()
-        {
-            return "";
-        }
     }
 }

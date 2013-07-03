@@ -55,6 +55,8 @@ namespace KungFuNao.ViewModels
 
             this.LoadData();
 
+
+
             /*
             this.Scenario.Add(new Scene("Left Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
             this.Scenario.Add(new Scene("Left Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
