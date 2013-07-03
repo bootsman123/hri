@@ -60,7 +60,7 @@ namespace KungFuNao.Models.Nao
         {
             this.Proxies.BehaviorManagerProxy.runBehavior("karate/stand");
             this.Proxies.TextToSpeechProxy.post.say("Welcome to my robodojo.");
-            this.Proxies.BehaviorManagerProxy.post.runBehavior(NaoBehaviors.BEHAVIOR_WELCOME);
+            this.Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_WELCOME);
             this.ExplainWhileMoving("I hope you are ready for your robot karate training!");
         }
 
@@ -70,8 +70,9 @@ namespace KungFuNao.Models.Nao
             this.ExplainWhileFlexing("When performing a lot of robot karate you will become stronger");
             this.ExplainWhileMoving("I will try to learn you how to perform some robot karate movements!");
             this.ExplainWhileMoving("Do you have any experience with robot karate?");
-
+            this.StartRotatingEars();
             string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+            this.StopRotatingEars();
             switch (choice)
             {
                 case KinectSpeechRecognition.CHOICE_POSITIVE:
@@ -100,11 +101,27 @@ namespace KungFuNao.Models.Nao
             this.ExplainWhileFlexing("Perform these robot katas every day to become stronger.");
             this.AskForFeedback();
         }
+        private void StartRotatingEars()
+        {
+            LedsProxy leds = Proxies.LedsProxy;
+            leds.on("EarLeds");
+        }
+
+        /// <summary>
+        /// Stop rotating ears.
+        /// </summary>
+        private void StopRotatingEars()
+        {
+            this.Proxies.LedsProxy.off("EarLeds");
+        }
+        
 
         public void AskForFeedback()
         {
             this.Proxies.TextToSpeechProxy.say("Did you enjoy this lesson?");
+            this.StartRotatingEars();
             string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+            this.StopRotatingEars();
             switch (choice)
             {
                 case KinectSpeechRecognition.CHOICE_POSITIVE:
