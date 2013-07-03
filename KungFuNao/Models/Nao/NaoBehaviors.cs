@@ -32,5 +32,39 @@ namespace KungFuNao.Models.Nao
         public static String BEHAVIOR_EXPLAIN1 = "naos-life-channel/stand_lookHand1";
         public static String BEHAVIOR_EXPLAIN2 = "naos-life-channel/stand_lookHand2";
         public static String BEHAVIOR_EXPLAIN3 = "naos-life-channel/stand_annoyed1";
+        public static String BEHAVIOR_EXPLAIN4 = "naos-life-channel/stand_waddle1";
+        public static String BEHAVIOR_EXPLAIN5 = "naos-life-channel/stand_waddle2";
+        public static String BEHAVIOR_EXPLAIN6 = "naos-life-channel/stand_scratchHand1";
+        public static String BEHAVIOR_EXPLAIN7 = "naos-life-channel/stand_scratchHead1";        
+        public static String BEHAVIOR_EXPLAIN8 = "naos-life-channel/stand_proud1";
+        public static String BEHAVIOR_EXPLAIN9 = "naos-life-channel/stand_proud2";
+        public static String BEHAVIOR_EXPLAIN10 = "naos-life-channel/stand_proud3";
+
+
+
+        public static String BEHAVIOR_SHOW_MUSCLES1 = "naos-life-channel/stand_showMuscles1";
+        public static String BEHAVIOR_SHOW_MUSCLES2 = "naos-life-channel/stand_showMuscles2";
+        public static String BEHAVIOR_SHOW_MUSCLES3 = "naos-life-channel/stand_showMuscles3";
+        public static String BEHAVIOR_SHOW_MUSCLES4 = "karate/show-muscles";
+        public static String BEHAVIOR_SHOW_MUSCLES5 = "naos-life-channel/stand_showMuscles5";
+        public static String BEHAVIOR_SHOW_MUSCLES6 = "naos-life-channel/stand_kungFu1";
+
+
+        public static String BEHAVIOR_SEE_SOMETHING6 = "naos-life-channel/stand_seeSomething6";
+        public static String BEHAVIOR_SEE_SOMETHING7 = "naos-life-channel/stand_seeSomething7";
+        public static String BEHAVIOR_SEE_SOMETHING8 = "naos-life-channel/stand_seeSomething8";
+        
+
+
+        public static String BEHAVIOR_THINK1 = "naos-life-channel/stand_think1";
+        public static String BEHAVIOR_THINK2 = "naos-life-channel/stand_think2";
+        public static String BEHAVIOR_THINK3 = "naos-life-channel/stand_think3";
+        public static String BEHAVIOR_THINK4 = "naos-life-channel/stand_think4";
+    
+    
+
+        public static String GOOD_PERFORMANCE1 = "naos-life-channel/stand_proud1";
+
+        public static String BAD_PERFORMANCE1 = "naos-life-channel/stand_mocker1";
     }
 }
