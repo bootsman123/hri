@@ -112,6 +112,16 @@ namespace KungFuNao.Models.Nao
 
             behaviorManagerProxy.runBehavior(possibleMovements[random]);
         }
+        public void explainWhileStandingWhileWaiting(String toExplainText)
+        {
+
+            textToSpeechProxy.say(toExplainText);
+        }
+
+        public void explainWhileStandingWhitoutWaiting(String toExplainText)
+        {
+            textToSpeechProxy.post.say(toExplainText);
+        }
 
         public void startEvaluationOfWholeKata()
         {
