@@ -48,7 +48,6 @@ namespace KungFuNao.Models.Nao
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
-            
             System.Diagnostics.Debug.WriteLine("NaoTeacher: asking confirmation...");
             String choice = this.speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
 

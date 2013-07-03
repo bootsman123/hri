@@ -12,7 +12,7 @@ namespace KungFuNao.Models
     public class Preferences : INotifyPropertyChanged
     {
         public readonly static ColorImageFormat COLOR_IMAGE_FORMAT = ColorImageFormat.RgbResolution640x480Fps30;
-        public readonly static string NAO_IP_ADDRESS = "192.168.1.103"; //"10.0.1.4";
+        public readonly static string NAO_IP_ADDRESS = "10.0.1.4";
         public readonly static int NAO_PORT = 9559;
 
         public readonly static string KINECT_DATA_FILE_PATH = "C:\\Users\\bootsman\\Desktop\\";

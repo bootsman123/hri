@@ -25,6 +25,21 @@ namespace KungFuNao.ViewModels
         #endregion
 
         #region Commands
+        public ICommand PlayCommand
+        {
+            get { return new RelayCommand(Play); }
+        }
+
+        public ICommand StopCommand
+        {
+            get { return new RelayCommand(Stop); }
+        }
+
+        public ICommand RecordCommand
+        {
+            get { return new RelayCommand(Record); }
+        }
+
         public ICommand RunCommand
         {
             get { return new RelayCommand(Run); }
@@ -55,7 +70,34 @@ namespace KungFuNao.ViewModels
             }
              * */
         }
+        
+        /// <summary>
+        /// Start playing selected scene.
+        /// </summary>
+        private void Play()
+        {
 
+        }
+
+        /// <summary>
+        /// Stop playing selected scene.
+        /// </summary>
+        private void Stop()
+        {
+
+        }
+
+        /// <summary>
+        /// Record a scene.
+        /// </summary>
+        private void Record()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void Run()
         {
             System.Diagnostics.Debug.WriteLine("MainWindowViewModel::Run()");
