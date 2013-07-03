@@ -177,8 +177,8 @@ namespace KungFuNao.Models.Nao
         private void explainEveryKataMotion()
         {
             this.NaoCommenter.explainWithMovement("I will now explain every motion you need to perfom.", NaoBehaviors.BEHAVIOR_EXPLAIN2);
-            this.NaoCommenter.explainWhileStandingWhileWaiting("Please move your body along with my body!");
-            this.NaoCommenter.explainWhileStandingWhileWaiting("I hope you are ready!");
+            this.NaoCommenter.explainWhileStandingWhileWaiting("Please move your body along with my body! Note that you have to mirror my body. ");
+            //this.NaoCommenter.explainWhileStandingWhileWaiting("I hope you are ready!");
             int movementNumber = 0;
             foreach (Scene scene in this.Scenario)
             {

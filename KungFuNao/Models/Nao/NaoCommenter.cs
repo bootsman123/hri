@@ -158,8 +158,8 @@ namespace KungFuNao.Models.Nao
             this.Proxies.TextToSpeechProxy.post.say("Hopefully you understand the whole technique, now let's see what you are able to do");
             this.Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_ACT_EXCITED);
             this.explainWhileMoving("Please follow along while we both perform the complete technique");
-            this.explainWhileMoving("I will watch you closely to determine how well you perform the technique");
-            this.explainWhileMoving("So make sure you make the same movements as I do");
+            this.explainWhileMoving("I will watch you closely to determine how well you perform the technique, So make sure you make the same movements as I do.");
+            
         }
     }
 }
