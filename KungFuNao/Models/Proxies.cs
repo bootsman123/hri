@@ -20,6 +20,7 @@ namespace KungFuNao.Models
 
         private TextToSpeechProxy textToSpeechProxy;
         private BehaviorManagerProxy behaviorManagerProxy;
+        private LedsProxy ledsProxy;
         #endregion
 
         private Preferences Preferences;
@@ -37,6 +38,7 @@ namespace KungFuNao.Models
 
             //this.TextToSpeechProxy = new TextToSpeechProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
             //this.BehaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
+            //this.LedsProxy = new LedsProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
         }
 
         /// <summary>
@@ -62,8 +64,9 @@ namespace KungFuNao.Models
         {
             System.Diagnostics.Debug.WriteLine("Proxies::Stop()");
 
-            //this.TextToSpeechProxy.stopAll();
-            //this.BehaviorManagerProxy.stopAllBehaviors();
+            this.TextToSpeechProxy.stopAll();
+            this.BehaviorManagerProxy.stopAllBehaviors();
+            //this.LedsProxy.stop(int id);
 
             this.KinectSpeechRecognition.Stop();
             this.KinectSensor.Stop();
@@ -107,6 +110,16 @@ namespace KungFuNao.Models
             {
                 this.behaviorManagerProxy = value;
                 this.OnPropertyChanged("BehaviorManagerProxy");
+            }
+        }
+
+        public LedsProxy LedsProxy
+        {
+            get { return this.ledsProxy; }
+            set
+            {
+                this.ledsProxy = value;
+                this.OnPropertyChanged("LedsProxy");
             }
         }
         #endregion

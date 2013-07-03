@@ -35,7 +35,7 @@
 			<StackPanel Name="RecordButtonGroup" Orientation="Horizontal" DockPanel.Dock="Right">
                 <Button Name="ButtonRecord" Command="{Binding RecordCommand}" Padding="2" Margin="4">
 					<StackPanel Orientation="Horizontal">
-						<Image Name="buttonRecordImage" Source="/KungFuNao;component/Resources/control_record.png" Stretch="None"/>
+						<Image Source="/KungFuNao;component/Resources/control_record.png" Stretch="None"/>
 						<TextBlock Padding="4,0,0,0"><Run Text="Record"/></TextBlock>
 					</StackPanel>
 				</Button>

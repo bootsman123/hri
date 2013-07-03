@@ -15,7 +15,7 @@ namespace KungFuNao.Models
 
         #region Constants.
         private readonly static ColorImageFormat COLOR_IMAGE_FORMAT = ColorImageFormat.RgbResolution640x480Fps30;
-        private readonly static string NAO_IP_ADDRESS = "10.0.1.2";
+        private readonly static string NAO_IP_ADDRESS = "10.0.1.7";
         private readonly static int NAO_PORT = 9559;
 
         private readonly static string KINECT_DATA_FILE_PATH = "C:\\Users\\bootsman\\Desktop\\";

@@ -82,16 +82,7 @@ namespace KungFuNao.ViewModels
             this.Scenario.Add(new Scene("Left Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
             this.Scenario.Add(new Scene("Left Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
             this.Scenario.Add(new Scene("Right Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(30, 5)));
-
-            IEnumerator<Scene> enumerator = this.Scenario.GetEnumerator();
-
-            while (enumerator.MoveNext())
-            {
-                Scene scene = enumerator.Current;
-                System.Diagnostics.Debug.WriteLine("Name: " + scene.Name);
-                System.Diagnostics.Debug.WriteLine("Skeletons: " + scene.Skeletons.Count);
-            }
-             * */
+            */
         }
         
         /// <summary>
