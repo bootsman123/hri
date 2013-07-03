@@ -40,7 +40,19 @@ namespace KungFuNao.Models.Nao
         public static String BEHAVIOR_EXPLAIN9 = "naos-life-channel/stand_proud2";
         public static String BEHAVIOR_EXPLAIN10 = "naos-life-channel/stand_proud3";
 
-
+        public static List<String> EXPLAINING_MOVEMENTS = new List<String> { 
+            NaoBehaviors.BEHAVIOR_EXPLAIN1, 
+            NaoBehaviors.BEHAVIOR_EXPLAIN2,
+            NaoBehaviors.BEHAVIOR_EXPLAIN3,
+            NaoBehaviors.BEHAVIOR_EXPLAIN4,
+            NaoBehaviors.BEHAVIOR_EXPLAIN5,
+            NaoBehaviors.BEHAVIOR_EXPLAIN6,
+            NaoBehaviors.BEHAVIOR_EXPLAIN7,
+            NaoBehaviors.BEHAVIOR_EXPLAIN8,
+            NaoBehaviors.BEHAVIOR_EXPLAIN9,
+            NaoBehaviors.BEHAVIOR_EXPLAIN10
+        };
+            
 
         public static String BEHAVIOR_SHOW_MUSCLES1 = "naos-life-channel/stand_showMuscles1";
         public static String BEHAVIOR_SHOW_MUSCLES2 = "naos-life-channel/stand_showMuscles2";
@@ -49,6 +61,14 @@ namespace KungFuNao.Models.Nao
         public static String BEHAVIOR_SHOW_MUSCLES5 = "naos-life-channel/stand_showMuscles5";
         public static String BEHAVIOR_SHOW_MUSCLES6 = "naos-life-channel/stand_kungFu1";
 
+        public static List<String> MUSCLE_MOVEMENTS = new List<String> { 
+            NaoBehaviors.BEHAVIOR_SHOW_MUSCLES1, 
+            NaoBehaviors.BEHAVIOR_SHOW_MUSCLES2, 
+            NaoBehaviors.BEHAVIOR_SHOW_MUSCLES3, 
+            NaoBehaviors.BEHAVIOR_SHOW_MUSCLES4, 
+            NaoBehaviors.BEHAVIOR_SHOW_MUSCLES5, 
+            NaoBehaviors.BEHAVIOR_SHOW_MUSCLES6
+        };
 
         public static String BEHAVIOR_SEE_SOMETHING6 = "naos-life-channel/stand_seeSomething6";
         public static String BEHAVIOR_SEE_SOMETHING7 = "naos-life-channel/stand_seeSomething7";
