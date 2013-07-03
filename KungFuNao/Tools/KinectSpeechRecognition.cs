@@ -14,12 +14,12 @@ namespace KungFuNao.Tools
 {
     public class KinectSpeechRecognition
     {
-        public static readonly double CONFIDENCE_THRESHOLD = 0.3;
+        public const double CONFIDENCE_THRESHOLD = 0.3;
 
-        public static readonly String CHOICE_POSITIVE = "POSITIVE";
-        public static readonly String CHOICE_NEGATIVE = "NEGATIVE";
-        public static readonly String CHOICE_LEFT = "LEFT";
-        public static readonly String CHOICE_RIGHT = "RIGHT";
+        public const String CHOICE_POSITIVE = "POSITIVE";
+        public const String CHOICE_NEGATIVE = "NEGATIVE";
+        public const String CHOICE_LEFT = "LEFT";
+        public const String CHOICE_RIGHT = "RIGHT";
 
         public static readonly List<String> CHOICES_POSITIVE_NEGATIVE = new List<String> {
             KinectSpeechRecognition.CHOICE_POSITIVE,
@@ -51,6 +51,9 @@ namespace KungFuNao.Tools
             // Build and load grammar.
             this.Dictionary = this.BuildDictionary();
             this.SpeechRecognitionEngine.LoadGrammar(this.BuildGrammar(this.Dictionary));
+
+            this.RecognizedChoice = "";
+            this.RecognizableChoices = new List<String>();
         }
 
         /// <summary>
@@ -177,13 +180,18 @@ namespace KungFuNao.Tools
         /// <returns></returns>
         public string WaitForChoice(List<String> choices, int timeOut = 10)
         {
-            
             this.RecognizableChoices = choices;
 
             this.SpeechRecognizedEvent = new AutoResetEvent(false);
             this.SpeechRecognizedEvent.WaitOne(timeOut * 1000);
 
-            return this.RecognizedChoice;
+            var choice = this.RecognizedChoice;
+
+            // Reset the recognized choice.
+            this.RecognizedChoice = "";
+            this.RecognizableChoices = new List<String>();
+
+            return choice;
         }
 
         /// <summary>
@@ -206,7 +214,5 @@ namespace KungFuNao.Tools
 
             return null;
         }
-
-
     }
 }

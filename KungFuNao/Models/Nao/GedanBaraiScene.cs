@@ -43,22 +43,24 @@ namespace KungFuNao.Models.Nao
                 this.performDefault(tts, bproxy);
 
                 tts.say("Do you understand this motion now?");
-                string answer = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
-                switch (answer)
+                string choicePositiveNegative = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+                switch (choicePositiveNegative)
                 {
-                    case "YES":
+                    case KinectSpeechRecognition.CHOICE_POSITIVE:
                         tts.say("Alright, then let's continue");
                         break;
-                    case "NO":
+                    case KinectSpeechRecognition.CHOICE_NEGATIVE:
+                    default:
                         tts.say("Too bad, are you having trouble with your left or your right arm?");
 
-                        string answer2 = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_LEFT_RIGHT);
-                        switch (answer2)
+                        string choiceLeftRight = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_LEFT_RIGHT);
+                        switch (choiceLeftRight)
                         {
-                            case "LEFT":
+                            case KinectSpeechRecognition.CHOICE_LEFT:
                                 explainLeftArm(tts, bproxy);
                                 break;
-                            case "RIGHT":
+                            case KinectSpeechRecognition.CHOICE_RIGHT:
+                            default:
                                 explainRightArm(tts, bproxy);
                                 break;
                         }
