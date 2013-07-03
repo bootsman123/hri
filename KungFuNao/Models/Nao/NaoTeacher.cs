@@ -27,6 +27,8 @@ namespace KungFuNao.Models.Nao
 
         private NaoCommenter NaoCommenter;
 
+        private int CurrentTrial;
+
         private Stream RecordStream;
         private KinectRecorder KinectRecorder;
         private bool IsRecording = false;
@@ -39,6 +41,8 @@ namespace KungFuNao.Models.Nao
             this.Scenario = Scenario;
 
             this.NaoCommenter = new NaoCommenter(this.Proxies);
+
+            this.CurrentTrial = 0;
 
             // Create thread.
             this.Worker.DoWork += Run;
@@ -65,11 +69,10 @@ namespace KungFuNao.Models.Nao
             }
             */
            
-            //welcomeUser();
-            //explainCompleteKata();
-            //explainEveryKataMotion();
-            int trialNumber = 0;
-            trainUser(trialNumber);
+            this.WelcomeUser();
+            this.ExplainCompleteKata();
+            this.ExplainEveryKataMotion();
+            this.TrainUser();
         }
 
         /// <summary>
@@ -88,7 +91,7 @@ namespace KungFuNao.Models.Nao
             this.Worker.CancelAsync();
         }
 
-        public void trainUser(int trial)
+        public void TrainUser()
         {
             List<Double> performances = this.EvaluateScenario();
 
@@ -96,18 +99,20 @@ namespace KungFuNao.Models.Nao
             {
                 this.NaoCommenter.sayGoodbyeGoodPerformance();
             }
-            else if (trial > NaoTeacher.MAXIMUM_AMOUNT_OF_TRIALS)
+            else if (this.CurrentTrial > NaoTeacher.MAXIMUM_AMOUNT_OF_TRIALS)
             {
                 this.NaoCommenter.sayGoodbyeLongPerformance();
             }
             else
             {
-                giveSpecificFeedback(performances);
-                trainUser(trial + 1);
+                GiveFeedbackOnScene(performances);
+
+                this.CurrentTrial++;
+                TrainUser();
             }
         }
 
-        private void giveSpecificFeedback(List<Double> performances)
+        private void GiveFeedbackOnScene(List<Double> performances)
         {
             int index = performances.IndexOf(performances.Min());
             Scene worstScene = this.Scenario.ElementAt(index);
@@ -124,14 +129,14 @@ namespace KungFuNao.Models.Nao
             double totalMaximumScore = this.Scenario.TotalMaximumScore();
 
             System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total performance: " + totalPerformance);
-            System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total performance: " + totalMinimumScore);
-            System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total performance: " + totalMaximumScore);
+            System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total minimum score: " + totalMinimumScore);
+            System.Diagnostics.Debug.WriteLine("NaoTeacher::HasGoodPerformance() - Total maximum score: " + totalMaximumScore);
 
             return (totalPerformance >= totalMinimumScore &&
                     totalPerformance <= totalMaximumScore);
         }
 
-        private void welcomeUser()
+        private void WelcomeUser()
         {
             this.NaoCommenter.welcomeUser();
             this.NaoCommenter.explainKarateToUser();
@@ -156,14 +161,14 @@ namespace KungFuNao.Models.Nao
                 List<Skeleton> skeletons = this.LoadRecording();
 
                 // Calculate performance.
-                var performance = DTW<Skeleton>.Distance(skeletons, scene.Skeletons, distance);
-                performances.Add(performance);
+                scene.DeterminePerformance(skeletons);
+                performances.Add(scene.Performance);
             }
 
             return performances;
         }
 
-        private void explainCompleteKata()
+        private void ExplainCompleteKata()
         {
             this.NaoCommenter.explainWhileMoving("Today we are going to focus on a robot technique, it is used to defend against evil robots");
             this.NaoCommenter.explainWhileStandingWhileWaiting("The complete technique looks like this");
@@ -174,7 +179,7 @@ namespace KungFuNao.Models.Nao
             }
         }
 
-        private void explainEveryKataMotion()
+        private void ExplainEveryKataMotion()
         {
             this.NaoCommenter.explainWithMovement("I will now explain every motion you need to perfom.", NaoBehaviors.BEHAVIOR_EXPLAIN2);
             this.NaoCommenter.explainWhileStandingWhileWaiting("Please move your body along with my body! Note that you have to mirror my body. ");
