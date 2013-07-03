@@ -89,6 +89,7 @@ namespace KungFuNao.Models.Nao
         public void sayGoodbyeGoodPerformance()
         {
             this.Proxies.TextToSpeechProxy.say("You performed very well! So much for todays lesson");
+            this.Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.GOOD_PERFORMANCE1);
             this.Proxies.TextToSpeechProxy.say("Keep on this level of practice");
             this.askUserForFeedback();
         }
@@ -154,9 +155,9 @@ namespace KungFuNao.Models.Nao
         {
             this.Proxies.TextToSpeechProxy.post.say("Hopefully you understand the whole technique, now let's see what you are able to do");
             this.Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_ACT_EXCITED);
-            this.Proxies.TextToSpeechProxy.say("Please follow along while we both perform the complete technique");
-            this.Proxies.TextToSpeechProxy.say("I will watch you closely to determine how well you perform the technique");
-            this.Proxies.TextToSpeechProxy.say("So make sure you make the same movements as I do");
+            this.explainWhileMoving("Please follow along while we both perform the complete technique");
+            this.explainWhileMoving("I will watch you closely to determine how well you perform the technique");
+            this.explainWhileMoving("So make sure you make the same movements as I do");
         }
     }
 }
