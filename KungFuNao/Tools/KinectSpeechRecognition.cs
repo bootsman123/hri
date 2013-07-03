@@ -206,16 +206,6 @@ namespace KungFuNao.Tools
             return null;
         }
 
-        //[Obsolete("Use WaitForChoice()",true)]
-        public string askConfirmation()
-        {
-            return "";
-        }
 
-        //[Obsolete("Use WaitForChoice()", true)]
-        public string askLeftRight()
-        {
-            return "";
-        }
     }
 }
