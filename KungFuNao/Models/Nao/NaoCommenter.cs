@@ -66,10 +66,10 @@ namespace KungFuNao.Models.Nao
 
         public void explainKarateToUser()
         {
-            this.Proxies.TextToSpeechProxy.say("Karate is a martial art where the user performs motions to defend himself");
-            this.explainWhileShowingMuscles("When performing a lot of karate you will become stronger");
-            this.Proxies.TextToSpeechProxy.say("I will try to learn you how to perform some karate motions!");
-            this.Proxies.TextToSpeechProxy.say("Do you have any experience with Karate?");
+            this.Proxies.TextToSpeechProxy.say("Robot Karate is a special martial art where the user performs motions to defend himself");
+            this.explainWhileShowingMuscles("When performing a lot of robot karate you will become stronger");
+            this.Proxies.TextToSpeechProxy.say("I will try to learn you how to perform some robot karate motions!");
+            this.Proxies.TextToSpeechProxy.say("Do you have any experience with robot Karate?");
 
             string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
             switch (choice)
