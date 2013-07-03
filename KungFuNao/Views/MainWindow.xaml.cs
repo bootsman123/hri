@@ -25,6 +25,7 @@ using Aldebaran.Proxies;
 using System.Runtime.Serialization;
 using System.Xml;
 using KungFuNao.Models.Nao;
+using System.Diagnostics;
 
 namespace KungFuNao
 {
@@ -61,6 +62,7 @@ namespace KungFuNao
         /// </summary>
         public MainWindow()
         {
+            Debug.WriteLine("MainWindows() welcome 1");
             InitializeComponent();
 
             this.Closed += this.OnWindowClosed;
@@ -70,6 +72,8 @@ namespace KungFuNao
 
             this.LoadData();
 
+//            this.naoTeacher = new NaoTeacher(null, null, null, null);
+            Debug.WriteLine("MainWindows() loaded data");
             this.Scenario.Add(new LeftHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
             this.Scenario.Add(new GedanBaraiScene("C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
             this.Scenario.Add(new RightHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(30, 5)));
@@ -90,7 +94,7 @@ namespace KungFuNao
             this.buttonRecord.Click += new RoutedEventHandler(this.onClickButtonRecord);
             this.buttonPlay.Click += new RoutedEventHandler(this.onClickButtonPlay);
             this.buttonStop.Click += new RoutedEventHandler(this.onClickButtonStop);
-
+            Debug.WriteLine("Started with buttons");
             // Color stream.
             this.colorStreamManager = new ColorStreamManager();
             this.colorStreamManager.PropertyChanged += this.colorStreamManagerPropertyChanged;
@@ -111,8 +115,9 @@ namespace KungFuNao
             this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.speechRecognition = new KinectSpeechRecognition(this.kinectSensor);
-
+            
             this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.scenario);
+            
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
         }
 

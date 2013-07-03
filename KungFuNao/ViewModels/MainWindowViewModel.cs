@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using KungFuNao.Tools;
 using Aldebaran.Proxies;
+using System.Diagnostics;
 
 namespace KungFuNao.ViewModels
 {
@@ -40,6 +41,8 @@ namespace KungFuNao.ViewModels
             this.Preferences = new Preferences();
 
             this.LoadData();
+
+            Debug.WriteLine("Hello");
 
             /*
             this.Scenario.Add(new Scene("Left Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));

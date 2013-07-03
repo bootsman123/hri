@@ -5,6 +5,8 @@ using KungFuNao.Tools;
 using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +16,8 @@ namespace KungFuNao.Models.Nao
 {
     public class NaoTeacher
     {
+        private readonly BackgroundWorker worker = new BackgroundWorker();
+
         public static int MAXIMUM_AMOUNT_OF_TRIALS = 3;
         public static double PERFORMANCE_TRESHOLD_FOR_FINALIZING_LESSON = 0.3;
 
@@ -31,19 +35,42 @@ namespace KungFuNao.Models.Nao
         public NaoTeacher(TextToSpeechProxy textToSpeechProxy, BehaviorManagerProxy behaviorManagerProxy, KinectSpeechRecognition speech, Scenario scenario)
         {
             this.textToSpeechProxy = textToSpeechProxy;
+            
             this.behaviorManagerProxy = behaviorManagerProxy;
             this.naoCommenter = new NaoCommenter(textToSpeechProxy, behaviorManagerProxy);
             this.speech = speech;
             this.scenario = scenario;
+
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+
+
+        }
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+        
+                Debug.WriteLine("Hello");
+                welcomeUser();
+                explainCompleteKata();
+                explainEveryKataMotion();
+                int trialNumber = 0;
+                trainUser(trialNumber);
+            
+            // run all background tasks here
+        }
+
+        private void worker_RunWorkerCompleted(object sender,
+                                               RunWorkerCompletedEventArgs e)
+        {
+            //update ui once worker complete his work
         }
 
         public void startProgram()
         {
-            welcomeUser();
-            explainCompleteKata();
-            explainEveryKataMotion();
-            int trialNumber = 0;
-            trainUser(trialNumber);
+
+            worker.RunWorkerAsync();
+            
 
         }
 

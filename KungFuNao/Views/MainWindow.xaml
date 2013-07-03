@@ -76,4 +76,6 @@
                 Name="imageCanvas"/>
         </Grid>
     </DockPanel>
+    
 </Window>
+ 
