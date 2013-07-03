@@ -65,7 +65,7 @@
                     <DataTemplate>
                         <TextBlock>
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0} ({1})">
+                                <MultiBinding StringFormat="{}{0} ({1:#,0})">
                                     <Binding Path="Name"/>
                                     <Binding Path="Performance"/>
                                 </MultiBinding>

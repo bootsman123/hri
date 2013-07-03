@@ -13,6 +13,7 @@ using Aldebaran.Proxies;
 using KungFuNao.Tools;
 using KungFuNao.Models.Nao;
 using DynamicTimeWarping;
+using System.ComponentModel;
 
 namespace KungFuNao
 {
@@ -20,8 +21,10 @@ namespace KungFuNao
     [KnownType(typeof(GedanBaraiScene))]
     [KnownType(typeof(RightHandPunchScene))]
     [DataContract]
-    public abstract class Scene
+    public abstract class Scene : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [DataMember]
         public string Name { get; set; }
 
@@ -31,7 +34,17 @@ namespace KungFuNao
         [DataMember]
         public Score Score { get; set; }
 
-        public double Performance { get; set; }
+        private double performance;
+
+        public double Performance
+        {
+            get { return this.performance; }
+            set
+            {
+                this.performance = value;
+                this.OnPropertyChanged("Performance");
+            }
+        }
 
         public int NumberOfTimesExplained { get; set; }
 
@@ -87,5 +100,16 @@ namespace KungFuNao
         public abstract void performDefault(Proxies Proxies);
         public abstract void explainToUser(Proxies Proxies);
         public abstract void giveFeedbackToUser(Proxies Proxies);
+
+
+        /// <summary>
+        /// On property changed.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
