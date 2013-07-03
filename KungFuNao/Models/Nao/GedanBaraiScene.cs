@@ -17,105 +17,108 @@ namespace KungFuNao.Models.Nao
         {
         }
 
-        public override void performDefault(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+        public override void performDefault(Proxies Proxies)
         {
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI);
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI);
         }
 
-        public override void explainToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy, KinectSpeechRecognition speech)
+        public override void explainToUser(Proxies Proxies)
         {
             this.NumberOfTimesExplained++;
 
-            tts.post.say("This motion is called " + this.Name + ", it is used to block an incoming kick");
-            this.performDefault(tts, bproxy);
-            tts.say("I will break it down for you in three steps");
+            Proxies.TextToSpeechProxy.post.say("This motion is called " + this.Name + ", it is used to block an incoming kick");
+            this.performDefault(Proxies);
+            Proxies.TextToSpeechProxy.say("I will break it down for you in three steps");
 
-            explanation(tts, bproxy);
+            explanation(Proxies);
 
             if (NumberOfTimesExplained > 1)
             {
-                tts.say("I already explained this motion.");
-                tts.post.say("I see you do not yet really get this motion, let me explain both arms seperately");
-                bproxy.runBehavior("naos-life-channel/stand_scratchHead1");
-                explainLeftArm(tts, bproxy);
-                explainRightArm(tts, bproxy);
-                tts.say("By combining these motions you get this.");
-                this.performDefault(tts, bproxy);
+                Proxies.TextToSpeechProxy.say("I already explained this motion.");
+                Proxies.TextToSpeechProxy.post.say("I see you do not yet really get this motion, let me explain both arms seperately");
+                Proxies.BehaviorManagerProxy.runBehavior("naos-life-channel/stand_scratchHead1");
+                explainLeftArm(Proxies);
+                explainRightArm(Proxies);
+                Proxies.TextToSpeechProxy.say("By combining these motions you get this.");
+                this.performDefault(Proxies);
 
-                tts.say("Do you understand this motion now?");
-                string choicePositiveNegative = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+                Proxies.TextToSpeechProxy.say("Do you understand this motion now?");
+                string choicePositiveNegative = Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+
                 switch (choicePositiveNegative)
                 {
                     case KinectSpeechRecognition.CHOICE_POSITIVE:
-                        tts.say("Alright, then let's continue");
+                        Proxies.TextToSpeechProxy.say("Alright, then let's continue");
                         break;
                     case KinectSpeechRecognition.CHOICE_NEGATIVE:
                     default:
-                        tts.say("Too bad, are you having trouble with your left or your right arm?");
+                        Proxies.TextToSpeechProxy.say("Too bad, are you having trouble with your left or your right arm?");
 
-                        string choiceLeftRight = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_LEFT_RIGHT);
+                        string choiceLeftRight = Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_LEFT_RIGHT);
                         switch (choiceLeftRight)
                         {
                             case KinectSpeechRecognition.CHOICE_LEFT:
-                                explainLeftArm(tts, bproxy);
+                                explainLeftArm(Proxies);
                                 break;
                             case KinectSpeechRecognition.CHOICE_RIGHT:
                             default:
-                                explainRightArm(tts, bproxy);
+                                explainRightArm(Proxies);
                                 break;
                         }
                         break;
                 }
             }
-
         }
 
-        private void explanation(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+        private void explanation(Proxies Proxies)
         {
+            // First step.
+            Proxies.TextToSpeechProxy.post.say("Bring your right hand towards your left ear.");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1);
+            Proxies.TextToSpeechProxy.say("");
+            Proxies.TextToSpeechProxy.say("While moving your right hand you also need to move your left arm forward.");
 
-            //first step
-            tts.post.say("Bring your right hand towards your left ear.");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1);
-            tts.say("");
-            tts.say("While moving your right hand you also need to move your left arm forward.");
-            //second step
-            tts.say("Now more your right hand forward in a sweeping motion, while bringing your left hand next to your upper body.");
-            tts.say("Here we go!");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2);
-            //third step
-            tts.say("There is something important about your right hand.");
-            tts.post.say("Make your to rotate your right hand during this motion.");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
-        }
-        private void explainLeftArm(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
-        {
-            tts.post.say("Bring your left hand slightly forward");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1_LEFT_ARM);
-            tts.post.say("Then bring your left hand next to your upper body");
+            // Second step.
+            Proxies.TextToSpeechProxy.say("Now more your right hand forward in a sweeping motion, while bringing your left hand next to your upper body.");
+            Proxies.TextToSpeechProxy.say("Here we go!");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2);
 
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2_LEFT_ARM);
-            tts.say("It is that simple!");
-
+            // Third step.
+            Proxies.TextToSpeechProxy.say("There is something important about your right hand.");
+            Proxies.TextToSpeechProxy.post.say("Make your to rotate your right hand during this motion.");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
         }
 
-        private void explainRightArm(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+        private void explainLeftArm(Proxies Proxies)
         {
+            Proxies.TextToSpeechProxy.post.say("Bring your left hand slightly forward");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1_LEFT_ARM);
+            Proxies.TextToSpeechProxy.post.say("Then bring your left hand next to your upper body");
 
-            //first step
-            tts.post.say("Bring your right hand towards your left ear");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1_RIGHT_ARM);
-            //second step
-            tts.say("Now more your right hand forward in a sweeping motion");
-            tts.say("Here we go!");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2_RIGHT_ARM);
-            //third step
-            tts.say("There is something important about your right hand");
-            tts.say("Make your to rotate your right hand while doing this");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2_LEFT_ARM);
+            Proxies.TextToSpeechProxy.say("It is that simple!");
         }
-        public override void giveFeedbackToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+
+        private void explainRightArm(Proxies Proxies)
         {
-            tts.say("Pay attention to your right hand, remember that you need to rotate it during the performance");
+            // First step.
+            Proxies.TextToSpeechProxy.post.say("Bring your right hand towards your left ear");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1_RIGHT_ARM);
+
+            // Second step.
+            Proxies.TextToSpeechProxy.say("Now more your right hand forward in a sweeping motion");
+            Proxies.TextToSpeechProxy.say("Here we go!");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2_RIGHT_ARM);
+
+            // Third step.
+            Proxies.TextToSpeechProxy.say("There is something important about your right hand");
+            Proxies.TextToSpeechProxy.say("Make your to rotate your right hand while doing this");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
+        }
+
+        public override void giveFeedbackToUser(Proxies Proxies)
+        {
+            Proxies.TextToSpeechProxy.say("Pay attention to your right hand, remember that you need to rotate it during the performance");
         }
     }
 }

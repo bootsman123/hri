@@ -17,25 +17,25 @@ namespace KungFuNao.Models.Nao
         {
         }
 
-        public override void performDefault(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+        public override void performDefault(Proxies Proxies)
         {
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_CONTINUOUS_PUNCH);
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_CONTINUOUS_PUNCH);
         }
 
-        public override void explainToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy, KinectSpeechRecognition speech)
+        public override void explainToUser(Proxies Proxies)
         {
             this.NumberOfTimesExplained++;
 
-            tts.say("This is the " + this.Name);
-            tts.post.say("Just move your left hand forward");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_FORWARD);
-            tts.post.say("And then move it backward");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_BACKWARD);
+            Proxies.TextToSpeechProxy.say("This is the " + this.Name);
+            Proxies.TextToSpeechProxy.post.say("Just move your left hand forward");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_FORWARD);
+            Proxies.TextToSpeechProxy.post.say("And then move it backward");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_BACKWARD);
         }
 
-        public override void giveFeedbackToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+        public override void giveFeedbackToUser(Proxies Proxies)
         {
-            tts.say("Pay attention to your left hand, you need to stretch it out completely");
+            Proxies.TextToSpeechProxy.say("Pay attention to your left hand, you need to stretch it out completely");
         }
     }
 }

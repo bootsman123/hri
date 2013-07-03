@@ -115,6 +115,7 @@
     <Compile Include="Models\Nao\LeftHandPunchScene.cs" />
     <Compile Include="Models\Nao\NaoCommenter.cs" />
     <Compile Include="Models\Nao\NaoTeacher.cs" />
+    <Compile Include="Models\Proxies.cs" />
     <Compile Include="Tools\KinectSpeechRecognition.cs" />
     <Compile Include="Models\Nao\NaoBehaviors.cs" />
     <Compile Include="Models\Nao\RightHandPunchScene.cs" />

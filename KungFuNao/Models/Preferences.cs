@@ -11,18 +11,23 @@ namespace KungFuNao.Models
 {
     public class Preferences : INotifyPropertyChanged
     {
-        public readonly static ColorImageFormat COLOR_IMAGE_FORMAT = ColorImageFormat.RgbResolution640x480Fps30;
-        public readonly static string NAO_IP_ADDRESS = "10.0.1.2";
-        public readonly static int NAO_PORT = 9559;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        public readonly static string KINECT_DATA_FILE_PATH = "C:\\Users\\bootsman\\Desktop\\";
-        public readonly static string KINECT_DATA_FILE_NAME = "data.kinect";
-        public readonly static string KINECT_DATA_FILE = Path.Combine(Preferences.KINECT_DATA_FILE_PATH, Preferences.KINECT_DATA_FILE_NAME);
+        #region Constants.
+        private readonly static ColorImageFormat COLOR_IMAGE_FORMAT = ColorImageFormat.RgbResolution640x480Fps30;
+        private readonly static string NAO_IP_ADDRESS = "10.0.1.2";
+        private readonly static int NAO_PORT = 9559;
 
-        public readonly static string SCENARIOS_FILE_PATH = "C:\\Users\\bootsman\\Desktop\\";
-        public readonly static string SCENARIOS_FILE_NAME = "scenarios.xml";
-        public readonly static string SCENARIOS_FILE = Path.Combine(Preferences.SCENARIOS_FILE_PATH, Preferences.SCENARIOS_FILE_NAME);
+        private readonly static string KINECT_DATA_FILE_PATH = "C:\\Users\\bootsman\\Desktop\\";
+        private readonly static string KINECT_DATA_FILE_NAME = "data.kinect";
+        private readonly static string KINECT_DATA_FILE = Path.Combine(Preferences.KINECT_DATA_FILE_PATH, Preferences.KINECT_DATA_FILE_NAME);
 
+        private readonly static string SCENARIOS_FILE_PATH = "C:\\Users\\bootsman\\Desktop\\";
+        private readonly static string SCENARIOS_FILE_NAME = "scenarios.xml";
+        private readonly static string SCENARIOS_FILE = Path.Combine(Preferences.SCENARIOS_FILE_PATH, Preferences.SCENARIOS_FILE_NAME);
+        #endregion
+
+        #region Fields.
         private ColorImageFormat colorImageFormat;
         private int imageWidth;
         private int imageHeight;
@@ -30,10 +35,9 @@ namespace KungFuNao.Models
         private string naoIpAddress;
         private int naoPort;
 
-        public string kinectDataFile;
-        public string scenariosFile;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        private string kinectDataFile;
+        private string scenariosFile;
+        #endregion
 
         /// <summary>
         /// Constructor.

@@ -16,50 +16,37 @@ namespace KungFuNao.Models.Nao
 {
     public class NaoTeacher
     {
-        private readonly BackgroundWorker worker = new BackgroundWorker();
+        private readonly BackgroundWorker Worker = new BackgroundWorker();
 
         public static int MAXIMUM_AMOUNT_OF_TRIALS = 3;
         public static double PERFORMANCE_TRESHOLD_FOR_FINALIZING_LESSON = 0.3;
 
-        private TextToSpeechProxy textToSpeechProxy;
-        private BehaviorManagerProxy behaviorManagerProxy;
-        private KinectSpeechRecognition speech;
-        private LedsProxy ledsProxy; 
-        private NaoCommenter naoCommenter;
-        private Scenario scenario;
+        #region Fields.
+        private Preferences Preferences;
+        private Proxies Proxies;
+        private Scenario Scenario;
 
-        private Stream recordStream;
-        private KinectRecorder kinectRecorder;
-        private bool isRecording = false;
+        private NaoCommenter NaoCommenter;
 
-        public NaoTeacher(TextToSpeechProxy textToSpeechProxy, BehaviorManagerProxy behaviorManagerProxy, KinectSpeechRecognition speech, Scenario scenario, LedsProxy ledsProxy)
+        private Stream RecordStream;
+        private KinectRecorder KinectRecorder;
+        private bool IsRecording = false;
+        #endregion
+
+        public NaoTeacher(Preferences Preferences, Proxies Proxies, Scenario Scenario)
         {
-            this.textToSpeechProxy = textToSpeechProxy;
-            this.ledsProxy = ledsProxy;
-            this.behaviorManagerProxy = behaviorManagerProxy;
-            this.naoCommenter = new NaoCommenter(textToSpeechProxy, behaviorManagerProxy);
-            this.speech = speech;
-            this.scenario = scenario;
+            this.Preferences = Preferences;
+            this.Proxies = Proxies;
+            this.Scenario = Scenario;
 
-            worker.DoWork += DoWork;
-            worker.RunWorkerCompleted += WorkerCompleted;
-            worker.WorkerSupportsCancellation = true;
+            this.NaoCommenter = new NaoCommenter(this.Proxies);
 
-        
-            // Create a new group
-            List<String> names = new List<String>{
-            "Face/Led/Red/Left/0Deg/Actuator/Value",
-            "Face/Led/Red/Left/90Deg/Actuator/Value",
-            "Face/Led/Red/Left/180Deg/Actuator/Value",
-            "Face/Led/Red/Left/270Deg/Actuator/Value"};
-            ledsProxy.createGroup("MyGroup",names);
-            // Switch the new group on
-            ledsProxy.on("MyGroup");
-            
-
+            // Create thread.
+            this.Worker.DoWork += Run;
+            this.Worker.WorkerSupportsCancellation = true;
         }
 
-        private void DoWork(object sender, DoWorkEventArgs e)
+        private void Run(object sender, DoWorkEventArgs e)
         {
             /*
             System.Diagnostics.Debug.WriteLine("NaoTeacher: asking confirmation...");
@@ -77,36 +64,29 @@ namespace KungFuNao.Models.Nao
             {
                 System.Diagnostics.Debug.WriteLine("NaoTeacher: No confirmation...");
             }
-             * */
-
-            /*
-            // Should check the following every now and then:
-            if (this.worker.CancellationPending)
-            {
-                return;
-            }
-             * */
+            */
            
-            
-            welcomeUser();
-            explainCompleteKata();
-            explainEveryKataMotion();
+            //welcomeUser();
+            //explainCompleteKata();
+            //explainEveryKataMotion();
             int trialNumber = 0;
             trainUser(trialNumber);
         }
 
-        private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-        }
-
+        /// <summary>
+        /// Start Nao teacher.
+        /// </summary>
         public void Start()
         {
-            worker.RunWorkerAsync();
+            this.Worker.RunWorkerAsync();
         }
 
+        /// <summary>
+        /// Stop Nao teacher.
+        /// </summary>
         public void Stop()
         {
-            worker.CancelAsync();
+            this.Worker.CancelAsync();
         }
 
         public void trainUser(int trial)
@@ -115,11 +95,11 @@ namespace KungFuNao.Models.Nao
 
             if (goodPerformance(performances))
             {
-                naoCommenter.sayGoodbyeGoodPerformance(speech);
+                this.NaoCommenter.sayGoodbyeGoodPerformance();
             }
             else if (trial > NaoTeacher.MAXIMUM_AMOUNT_OF_TRIALS)
             {
-                naoCommenter.sayGoodbyeLongPerformance(speech);
+                this.NaoCommenter.sayGoodbyeLongPerformance();
             }
             else
             {
@@ -132,11 +112,11 @@ namespace KungFuNao.Models.Nao
         {
             double minimum = performances.Min();
             int location = Array.IndexOf(performances, minimum);
-            Scene worstScene = this.scenario.ElementAt(location);
+            Scene worstScene = this.Scenario.ElementAt(location);
 
-            naoCommenter.explainWhileMoving("Your " + worstScene.Name + " needs some improvement, let me explain the " + worstScene.Name + " again");
-            worstScene.giveFeedbackToUser(textToSpeechProxy, behaviorManagerProxy);
-            worstScene.explainToUser(textToSpeechProxy, behaviorManagerProxy, speech);
+            this.NaoCommenter.explainWhileMoving("Your " + worstScene.Name + " needs some improvement, let me explain the " + worstScene.Name + " again");
+            worstScene.giveFeedbackToUser(this.Proxies);
+            worstScene.explainToUser(this.Proxies);
         }
 
         private bool goodPerformance(double[] performances)
@@ -146,22 +126,22 @@ namespace KungFuNao.Models.Nao
 
         private void welcomeUser()
         {
-            naoCommenter.welcomeUser();
-            naoCommenter.explainKarateToUser(speech);
+            this.NaoCommenter.welcomeUser();
+            this.NaoCommenter.explainKarateToUser();
         }
 
         private double[] evaluateKata()
         {
             var distance = new SkeletonDistance();
 
-            naoCommenter.startEvaluationOfWholeKata();
+            this.NaoCommenter.startEvaluationOfWholeKata();
 
             double[] performance = new double[3];
             int x = 0;
-            foreach (Scene scene in this.scenario)
+            foreach (Scene scene in this.Scenario)
             {
                 this.startRecording();
-                scene.performDefault(textToSpeechProxy, behaviorManagerProxy);
+                scene.performDefault(this.Proxies);
                 this.stopRecording();
 
                 // Load data.
@@ -173,48 +153,48 @@ namespace KungFuNao.Models.Nao
 
         private void explainCompleteKata()
         {
-            naoCommenter.explainWhileMoving("Today we are going to focus on a robot technique, it is used to defend against evil robots");
-            naoCommenter.explainWhileStandingWhileWaiting("The complete technique looks like this");
+            this.NaoCommenter.explainWhileMoving("Today we are going to focus on a robot technique, it is used to defend against evil robots");
+            this.NaoCommenter.explainWhileStandingWhileWaiting("The complete technique looks like this");
 
-            foreach (Scene scene in this.scenario)
+            foreach (Scene scene in this.Scenario)
             {
-                scene.performDefault(textToSpeechProxy, behaviorManagerProxy);
+                scene.performDefault(this.Proxies);
             }
         }
 
         private void explainEveryKataMotion()
         {
-            naoCommenter.explainWithMovement("I will now explain every motion you need to perfom.",NaoBehaviors.BEHAVIOR_EXPLAIN2);
-            naoCommenter.explainWhileStandingWhileWaiting("Please move your body along with my body!");
-            naoCommenter.explainWhileStandingWhileWaiting("I hope you are ready!");
+            this.NaoCommenter.explainWithMovement("I will now explain every motion you need to perfom.", NaoBehaviors.BEHAVIOR_EXPLAIN2);
+            this.NaoCommenter.explainWhileStandingWhileWaiting("Please move your body along with my body!");
+            this.NaoCommenter.explainWhileStandingWhileWaiting("I hope you are ready!");
             int movementNumber = 0;
-            foreach (Scene scene in this.scenario)
+            foreach (Scene scene in this.Scenario)
             {
-                this.naoCommenter.introduceMovement(movementNumber++);
-                scene.explainToUser(textToSpeechProxy, behaviorManagerProxy, speech);
+                this.NaoCommenter.introduceMovement(movementNumber++);
+                scene.explainToUser(this.Proxies);
             }
         }
 
         private void startRecording()
         {
             // Start recording.
-            this.recordStream = new BufferedStream(new FileStream(Preferences.KINECT_DATA_FILE, FileMode.Create));
-            this.kinectRecorder = new KinectRecorder(KinectRecordOptions.Skeletons, this.recordStream);
+            this.RecordStream = new BufferedStream(new FileStream(this.Preferences.KinectDataFile, FileMode.Create));
+            this.KinectRecorder = new KinectRecorder(KinectRecordOptions.Skeletons, this.RecordStream);
 
-            this.isRecording = true;
+            this.IsRecording = true;
         }
 
         private void stopRecording()
         {
             // Stop recording.
-            this.isRecording = false;
+            this.IsRecording = false;
 
-            this.kinectRecorder.Stop();
+            this.KinectRecorder.Stop();
         }
 
         private List<Skeleton> loadRecording()
         {
-            using (Stream stream = new BufferedStream(new FileStream(Preferences.KINECT_DATA_FILE, FileMode.Open)))
+            using (Stream stream = new BufferedStream(new FileStream(this.Preferences.KinectDataFile, FileMode.Open)))
             {
                 return Tools.SkeletonRecordingConverter.FromStream(stream);
             }
@@ -225,7 +205,7 @@ namespace KungFuNao.Models.Nao
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void kinectSensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+        public void KinectSensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
             using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
             {
@@ -235,9 +215,9 @@ namespace KungFuNao.Models.Nao
                 }
 
                 // Record?
-                if (this.isRecording)
+                if (this.IsRecording)
                 {
-                    this.kinectRecorder.Record(skeletonFrame);
+                    this.KinectRecorder.Record(skeletonFrame);
                 }
             }
         }

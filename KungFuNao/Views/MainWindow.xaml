@@ -12,29 +12,28 @@
     <DockPanel LastChildFill="True">
         <!-- Control buttons. -->
 		<DockPanel LastChildFill="False" DockPanel.Dock="Bottom">
-			<StackPanel Name="controlButtonGroup" Orientation="Horizontal" DockPanel.Dock="Left">
-                <Button Name="buttonPlay" Padding="2" Margin="4">
+			<StackPanel Name="ControlButtonGroup" Orientation="Horizontal" DockPanel.Dock="Left">
+                <Button Name="ButtonPlay" Command="{Binding PlayCommand}" Padding="2" Margin="4">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/KungFuNao;component/Resources/control_play.png" Stretch="None"/>
                         <TextBlock Padding="4,0,0,0"><Run Text="Play"/></TextBlock>
                     </StackPanel>
                 </Button>
-                <Button Name="buttonStop" Padding="2" Margin="4">
+                <Button Name="ButtonStop" Command="{Binding StopCommand}" Padding="2" Margin="4">
 					<StackPanel Orientation="Horizontal">
 						<Image Source="/KungFuNao;component/Resources/control_stop.png" Stretch="None"/>
 						<TextBlock Padding="4,0,0,0"><Run Text="Stop"/></TextBlock>
 					</StackPanel>
                 </Button>
-                <!-- Command="{Binding RunCommand}" -->
-                <Button Name="buttonRun" Padding="2" Margin="4">
+                <Button Name="ButtonRun" Command="{Binding RunCommand}" Padding="2" Margin="4">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/KungFuNao;component/Resources/bookmark.png" Stretch="None"/>
                         <TextBlock Padding="4,0,0,0"><Run Text="Run"/></TextBlock>
                     </StackPanel>
                 </Button>
             </StackPanel>
-			<StackPanel Name="recordButtonGroup" Orientation="Horizontal" DockPanel.Dock="Right">
-				<Button Name="buttonRecord" Padding="2" Margin="4">
+			<StackPanel Name="RecordButtonGroup" Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Name="ButtonRecord" Command="{Binding RecordCommand}" Padding="2" Margin="4">
 					<StackPanel Orientation="Horizontal">
 						<Image Name="buttonRecordImage" Source="/KungFuNao;component/Resources/control_record.png" Stretch="None"/>
 						<TextBlock Padding="4,0,0,0"><Run Text="Record"/></TextBlock>
@@ -45,10 +44,10 @@
 
         <!-- Control slider. -->
         <DockPanel DockPanel.Dock="Bottom">
-            <Label Name="labelElapsedTime" DockPanel.Dock="Left" Content="--:--"></Label>
-            <Label Name="labelTotalTime" DockPanel.Dock="Right" Content="--:--"></Label>
+            <Label Name="LabelElapsedTime" DockPanel.Dock="Left" Content="--:--"></Label>
+            <Label Name="LabelTotalTime" DockPanel.Dock="Right" Content="--:--"></Label>
             <Slider
-                Name="controlSlider"
+                Name="ControlSlider"
                 DockPanel.Dock="Bottom"
                 Margin="4"
                 Minimum="0"
@@ -61,7 +60,7 @@
         <!-- Side panel. -->
         <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Width="200">
             <Label Content="Scenario" FontWeight="Bold" FontSize="14px"/>
-            <ListBox Name="scenarioListBox" ItemsSource="{Binding Scenario}" BorderBrush="Transparent">
+            <ListBox Name="ScenarioListBox" ItemsSource="{Binding Scenario}" BorderBrush="Transparent">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Label Content="{Binding Name}"/>
@@ -72,14 +71,15 @@
         </StackPanel>
 
         <!-- Kinect streams. -->
-        <Grid Name="imageGrid">
+        <Grid Name="ImageGrid">
         	<Image
-                Name="imageKinect"
+                Name="ImageKinect"
                 Width="{Binding Path=Preferences.ImageWidth}"
-                Height="{Binding Path=Preferences.ImageHeight}"/>
+                Height="{Binding Path=Preferences.ImageHeight}"
+                Source="{Binding Path=Image}"/>
         	<Canvas
                 Background="Transparent"
-                Name="imageCanvas"/>
+                Name="ImageCanvas"/>
         </Grid>
     </DockPanel>
     
