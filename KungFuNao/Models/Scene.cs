@@ -74,8 +74,8 @@ namespace KungFuNao
             this.Initialize();
         }
 
-        public abstract void performDefault(TextToSpeechProxy tts, BehaviorManagerProxy bproxy);
-        public abstract void explainToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy, KinectSpeechRecognition speech);
-        public abstract void giveFeedbackToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy);
+        public abstract void performDefault(Proxies Proxies);
+        public abstract void explainToUser(Proxies Proxies);
+        public abstract void giveFeedbackToUser(Proxies Proxies);
     }
 }

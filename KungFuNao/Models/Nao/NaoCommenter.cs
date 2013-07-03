@@ -10,132 +10,140 @@ namespace KungFuNao.Models.Nao
 {
     class NaoCommenter
     {
-        private TextToSpeechProxy textToSpeechProxy;
-        private BehaviorManagerProxy behaviorManagerProxy;
+        #region Fields.
+        private Proxies Proxies;
+        #endregion
 
-        public NaoCommenter(TextToSpeechProxy textToSpeechProxy, BehaviorManagerProxy behaviorManagerProxy)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="Proxies"></param>
+        /// <param name="KinectSpeechRecognition"></param>
+        public NaoCommenter(Proxies Proxies)
         {
-            this.textToSpeechProxy = textToSpeechProxy;
-            this.behaviorManagerProxy = behaviorManagerProxy;
+            this.Proxies = Proxies;
         }
 
         public void introduceMovement(int numberOfCurrentMovementInList)
         {
             if (numberOfCurrentMovementInList < 1)
             {
-                textToSpeechProxy.say("Let us start with the first movement");
+                this.Proxies.TextToSpeechProxy.say("Let us start with the first movement");
             }
             else
             {
-                textToSpeechProxy.say("Now on to the next movement");
+                this.Proxies.TextToSpeechProxy.say("Now on to the next movement");
             }
         }
 
         public void goodPerformanceCompleteKata()
         {
-            textToSpeechProxy.say("That was a very good performance!");
+            this.Proxies.TextToSpeechProxy.say("That was a very good performance!");
         }
 
         public void badPerformanceCompleteKata()
         {
-            textToSpeechProxy.say("Boy am I lucky, we will spend more time together practicing!");
+            this.Proxies.TextToSpeechProxy.say("Boy am I lucky, we will spend more time together practicing!");
         }
 
         public void goodPerformanceMotion()
         {
-            textToSpeechProxy.say("This motion was performed very good!");
+            this.Proxies.TextToSpeechProxy.say("This motion was performed very good!");
         }
 
         public void badPerformanceMotion()
         {
-            textToSpeechProxy.say("Well, we need to do this again, but that is no problem for me!");
+            this.Proxies.TextToSpeechProxy.say("Well, we need to do this again, but that is no problem for me!");
         }
+
         public void welcomeUser()
         {
-            behaviorManagerProxy.runBehavior("karate/stand");
-            textToSpeechProxy.post.say("Welcome to my robodojo.");
-            behaviorManagerProxy.post.runBehavior(NaoBehaviors.BEHAVIOR_WELCOME);
-            textToSpeechProxy.post.say("I hope you are ready for your karate training!");
+            this.Proxies.BehaviorManagerProxy.runBehavior("karate/stand");
+            this.Proxies.TextToSpeechProxy.post.say("Welcome to my robodojo.");
+            this.Proxies.BehaviorManagerProxy.post.runBehavior(NaoBehaviors.BEHAVIOR_WELCOME);
+            this.Proxies.TextToSpeechProxy.post.say("I hope you are ready for your karate training!");
         }
-        public void explainKarateToUser(KinectSpeechRecognition speech)
-        {
-            textToSpeechProxy.say("Karate is a martial art where the user performs motions to defend himself");
-            textToSpeechProxy.say("I will try to learn you how to perform some karate motions!");
 
-            textToSpeechProxy.say("Do you have any experience with Karate?");
-            string choice = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+        public void explainKarateToUser()
+        {
+            this.Proxies.TextToSpeechProxy.say("Karate is a martial art where the user performs motions to defend himself");
+            this.Proxies.TextToSpeechProxy.say("I will try to learn you how to perform some karate motions!");
+            this.Proxies.TextToSpeechProxy.say("Do you have any experience with Karate?");
+
+            string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
             switch (choice)
             {
                 case KinectSpeechRecognition.CHOICE_POSITIVE:
-                    textToSpeechProxy.say("In that case this will be an easy lesson!");
+                    this.Proxies.TextToSpeechProxy.say("In that case this will be an easy lesson!");
                     break;
                 case KinectSpeechRecognition.CHOICE_NEGATIVE:
                 default:
-                    textToSpeechProxy.say("In that case I will explain the behaviours extra good");
+                    this.Proxies.TextToSpeechProxy.say("In that case I will explain the behaviours extra good");
                     break;
             }
         }
 
-        public void sayGoodbyeGoodPerformance(KinectSpeechRecognition speech)
+        public void sayGoodbyeGoodPerformance()
         {
-            textToSpeechProxy.say("You performed very well! So much for todays lesson");
-            textToSpeechProxy.say("Keep on this level of practice");
-            askUserForFeedback(speech);
+            this.Proxies.TextToSpeechProxy.say("You performed very well! So much for todays lesson");
+            this.Proxies.TextToSpeechProxy.say("Keep on this level of practice");
+            this.askUserForFeedback();
         }
 
-        public void sayGoodbyeLongPerformance(KinectSpeechRecognition speech)
+        public void sayGoodbyeLongPerformance()
         {
-            textToSpeechProxy.say("You still need some more practice, keep on doing this everyday");
-            askUserForFeedback(speech);
+            this.Proxies.TextToSpeechProxy.say("You still need some more practice, keep on doing this everyday");
+            askUserForFeedback();
         }
 
-        public void askUserForFeedback(KinectSpeechRecognition speech)
+        public void askUserForFeedback()
         {
-            textToSpeechProxy.say("Did you enjoy this lesson?");
-            string choice = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+            this.Proxies.TextToSpeechProxy.say("Did you enjoy this lesson?");
+            string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
             switch (choice)
             {
                 case KinectSpeechRecognition.CHOICE_POSITIVE:
-                    textToSpeechProxy.say("I am happy to hear this!");
+                    this.Proxies.TextToSpeechProxy.say("I am happy to hear this!");
                     break;
                 case KinectSpeechRecognition.CHOICE_NEGATIVE:
                 default:
-                    textToSpeechProxy.say("Aw, too bad.");
+                    this.Proxies.TextToSpeechProxy.say("Aw, too bad.");
                     break;
             }
         }
 
         public void explainWhileMoving(String toExplainText)
         {
-            textToSpeechProxy.post.say(toExplainText);
+            this.Proxies.TextToSpeechProxy.post.say(toExplainText);
             List<String> possibleMovements = new List<String> { NaoBehaviors.BEHAVIOR_EXPLAIN1, NaoBehaviors.BEHAVIOR_EXPLAIN2 };
             Random rnd = new Random();
             int random = rnd.Next(possibleMovements.Count);
 
-            behaviorManagerProxy.runBehavior(possibleMovements[random]);
+            this.Proxies.BehaviorManagerProxy.runBehavior(possibleMovements[random]);
         }
         public void explainWhileStandingWhileWaiting(String toExplainText)
         {
-
-            textToSpeechProxy.say(toExplainText);
+            this.Proxies.TextToSpeechProxy.say(toExplainText);
         }
 
         public void explainWhileStandingWhitoutWaiting(String toExplainText)
         {
-            textToSpeechProxy.post.say(toExplainText);
+            this.Proxies.TextToSpeechProxy.post.say(toExplainText);
         }
-        public void explainWithMovement(String toExplainText, String nameOfMovement){
-            this.textToSpeechProxy.post.say(toExplainText);
-            this.behaviorManagerProxy.runBehavior(nameOfMovement);
+
+        public void explainWithMovement(String toExplainText, String nameOfMovement)
+        {
+            this.Proxies.TextToSpeechProxy.post.say(toExplainText);
+            this.Proxies.BehaviorManagerProxy.runBehavior(nameOfMovement);
         }
 
         public void startEvaluationOfWholeKata()
         {
-            textToSpeechProxy.post.say("Hopefully you understand the whole technique, now let's see what you are able to do");
-            behaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_ACT_EXCITED);
-            textToSpeechProxy.say("Please follow along while we both perform the complete technique");
-            textToSpeechProxy.say("I will watch you closely to determine how well you perform the technique");
-            textToSpeechProxy.say("So make sure you make the same movements as I do");
+            this.Proxies.TextToSpeechProxy.post.say("Hopefully you understand the whole technique, now let's see what you are able to do");
+            this.Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_ACT_EXCITED);
+            this.Proxies.TextToSpeechProxy.say("Please follow along while we both perform the complete technique");
+            this.Proxies.TextToSpeechProxy.say("I will watch you closely to determine how well you perform the technique");
+            this.Proxies.TextToSpeechProxy.say("So make sure you make the same movements as I do");
         }
     }
 }

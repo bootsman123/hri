@@ -17,27 +17,29 @@ namespace KungFuNao.Models.Nao
         {
         }
 
-        public override void performDefault(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+        public override void performDefault(Proxies Proxies)
         {
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_CONTINUOUS_PUNCH);
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_CONTINUOUS_PUNCH);
         }
 
-        public override void explainToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy, KinectSpeechRecognition speech)
+        public override void explainToUser(Proxies Proxies)
         {
             this.NumberOfTimesExplained++;
 
-            tts.say("This motion is called the " + this.Name);
-            //First step
-            tts.post.say("You move your right hand forward");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_PUNCH_FORWARD);
-            //Second step 
-            tts.post.say("And then move your right hand back");
-            bproxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_PUNCH_BACKWARD);
+            Proxies.TextToSpeechProxy.say("This motion is called the " + this.Name);
+
+            // First step.
+            Proxies.TextToSpeechProxy.post.say("You move your right hand forward");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_PUNCH_FORWARD);
+
+            // Second step .
+            Proxies.TextToSpeechProxy.post.say("And then move your right hand back");
+            Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_PUNCH_BACKWARD);
         }
 
-        public override void giveFeedbackToUser(TextToSpeechProxy tts, BehaviorManagerProxy bproxy)
+        public override void giveFeedbackToUser(Proxies Proxies)
         {
-            tts.say("Pay attention to your right hand, you need to stretch it out completely");
+            Proxies.TextToSpeechProxy.say("Pay attention to your right hand, you need to stretch it out completely");
         }
     }
 }

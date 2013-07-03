@@ -34,33 +34,11 @@ namespace KungFuNao
     /// </summary>
     public partial class MainWindow : Window
     {
-        public enum Mode { Normal, Replay, Record };
+        #region Fields.
+        private MainWindowViewModel MainWindowViewModel;
 
-        #region Getters and setters.
-        private KinectSensor kinectSensor;
-        private Mode mode;
-
-        public Preferences Preferences { get; private set; }
-        public Scenario Scenario { get; private set; }
-
-        private ColorStreamManager colorStreamManager;
-        private SkeletonDisplayManager skeletonDisplayManager;
-        private Skeleton[] skeletons;
-
-        private KinectRecorder kinectRecorder;
-        private Stream recordStream;
-        private KinectReplay kinectReplay;
-        private Stream replayStream;
-
-        private KinectSpeechRecognition speechRecognition;
-        private TextToSpeechProxy textToSpeechProxy;
-        private BehaviorManagerProxy behaviorManagerProxy;
-
-        private NaoTeacher naoTeacher;
-        #endregion
-
-        #region Commands.
-        //public ICommand RunCommand { get { return new RelayCommand(Run); } }
+        private SkeletonDisplayManager SkeletonDisplayManager;
+        private Skeleton[] Skeletons;
         #endregion
 
         /// <summary>
@@ -70,194 +48,17 @@ namespace KungFuNao
         {
             InitializeComponent();
 
-            this.Loaded += this.OnWindowLoaded;
-            this.Closed += this.OnWindowClosed;
-            this.DataContext = this;
+            this.MainWindowViewModel = new MainWindowViewModel();
+            this.Loaded += this.MainWindowViewModel.OnWindowLoaded;
+            this.Closed += this.MainWindowViewModel.OnWindowClosed;
 
-            this.Preferences = new Preferences();
-
-            this.LoadData();
-
-            //this.Scenario.Add(new LeftHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
-            //this.Scenario.Add(new GedanBaraiScene("C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
-            //this.Scenario.Add(new RightHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(30, 5)));
-
-            // Find Kinect sensor.
-            this.kinectSensor = KinectSensor.KinectSensors.FirstOrDefault(e => e.Status == KinectStatus.Connected);
-
-            if (this.kinectSensor == null)
-            {
-                return;
-            }
-
-            this.mode = Mode.Normal;
-            this.recordStream = null;
-            this.replayStream = null;
-
-            // Add button listeners.
-            this.buttonRecord.Click += new RoutedEventHandler(this.onClickButtonRecord);
-            this.buttonPlay.Click += new RoutedEventHandler(this.onClickButtonPlay);
-            this.buttonStop.Click += new RoutedEventHandler(this.onClickButtonStop);
-            this.buttonRun.Click += new RoutedEventHandler(this.onClickButtonRun);
-
-            // Color stream.
-            this.colorStreamManager = new ColorStreamManager();
-            this.colorStreamManager.PropertyChanged += this.colorStreamManagerPropertyChanged;
-
-            this.kinectSensor.ColorStream.Enable(Preferences.COLOR_IMAGE_FORMAT);
-            this.kinectSensor.ColorFrameReady += new EventHandler<ColorImageFrameReadyEventArgs>(this.kinectSensorColorFrameReady);
+            this.DataContext = this.MainWindowViewModel;
 
             // Skeleton stream.
-            this.skeletonDisplayManager = new SkeletonDisplayManager(this.kinectSensor, this.imageCanvas);
-            this.skeletons = null;
+            this.SkeletonDisplayManager = new SkeletonDisplayManager(this.MainWindowViewModel.Proxies.KinectSensor, this.ImageCanvas);
+            this.Skeletons = null;
 
-            this.kinectSensor.SkeletonStream.Enable();
-            this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.kinectSensorSkeletonFrameReady);
-
-            // Initialize proxies.
-            this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
-            this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
-            this.speechRecognition = new KinectSpeechRecognition(this.kinectSensor);
-            
-            this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.Scenario);
-            this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
-        }
-
-        /// <summary>
-        /// On color stream manager property changed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void colorStreamManagerPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            this.imageKinect.Source = this.colorStreamManager.Bitmap;
-        }
-
-        /// <summary>
-        /// On click button record.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void onClickButtonRecord(object sender, RoutedEventArgs e)
-        {
-            // Stop recording.
-            if (this.mode == Mode.Record)
-            {
-                System.Diagnostics.Debug.WriteLine("Stop recording...");
-
-                this.mode = Mode.Normal;
-                this.kinectRecorder.Stop();
-            }
-            // Start recording.
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("Start recording...");
-
-                this.recordStream = new BufferedStream(new FileStream(Preferences.KINECT_DATA_FILE, FileMode.Create));
-                this.kinectRecorder = new KinectRecorder(KinectRecordOptions.Skeletons, this.recordStream);
-                this.mode = Mode.Record;
-
-                //KinectRecordOptions.Color | 
-            }
-        }
-
-        /// <summary>
-        /// On click button play.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void onClickButtonPlay(object sender, RoutedEventArgs e)
-        {
-            if (this.kinectReplay == null)
-            {
-                if (this.replayStream == null)
-                {
-                    this.replayStream = new FileStream(Preferences.KINECT_DATA_FILE, FileMode.Open);
-                }
-
-                this.kinectReplay = new KinectReplay(this.replayStream);
-                this.kinectReplay.ColorImageFrameReady += new EventHandler<ReplayColorImageFrameReadyEventArgs>(this.replayColorImageFrameReady);
-                this.kinectReplay.SkeletonFrameReady += new EventHandler<ReplaySkeletonFrameReadyEventArgs>(this.replaySkeletonFrameReady); 
-
-                this.kinectReplay.Start();
-                this.mode = Mode.Replay;
-            }
-        }
-
-        /// <summary>
-        /// On click button stop.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void onClickButtonStop(object sender, RoutedEventArgs e)
-        {
-            if (this.mode == Mode.Replay)
-            {
-                this.kinectReplay.Stop();
-                this.mode = Mode.Normal;
-            }
-        }
-
-        /// <summary>
-        /// On click button run.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void onClickButtonRun(object sender, RoutedEventArgs e)
-        {
-            this.naoTeacher.Start();
-        }
-
-        private void replayColorImageFrameReady(object sender, ReplayColorImageFrameReadyEventArgs e)
-        {
-            ReplayColorImageFrame replayColorImageFrame = e.ColorImageFrame;
-
-            if (replayColorImageFrame == null)
-            {
-                return;
-            }
-
-            colorStreamManager.Update(replayColorImageFrame);
-        }
-
-        private void replaySkeletonFrameReady(object sender, ReplaySkeletonFrameReadyEventArgs e)
-        {
-            ReplaySkeletonFrame replaySkeletonFrame = e.SkeletonFrame;
-
-            if (replaySkeletonFrame == null)
-            {
-                return;
-            }
-
-            this.skeletonDisplayManager.Draw(replaySkeletonFrame.Skeletons, false);
-        }
-
-        /// <summary>
-        /// On color frame ready.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void kinectSensorColorFrameReady(object sender, ColorImageFrameReadyEventArgs e)
-        {
-            using (ColorImageFrame colorImageFrame = e.OpenColorImageFrame())
-            {
-                if (colorImageFrame == null)
-                {
-                    return;
-                }
-
-                // Record?
-                if (this.mode == Mode.Record)
-                {
-                    //this.kinectRecorder.Record(colorImageFrame);
-                }
-
-                // Display real time?
-                if (this.mode != Mode.Replay)
-                {
-                    this.colorStreamManager.Update(new ReplayColorImageFrame(colorImageFrame));
-                }
-            }
+            this.MainWindowViewModel.Proxies.KinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.KinectSensorSkeletonFrameReady);
         }
 
         /// <summary>
@@ -265,93 +66,24 @@ namespace KungFuNao
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void kinectSensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
+        private void KinectSensorSkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs e)
         {
-            using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
+            using (SkeletonFrame SkeletonFrame = e.OpenSkeletonFrame())
             {
-                if (skeletonFrame == null)
+                if (SkeletonFrame == null)
                 {
                     return;
                 }
 
-                // Record?
-                if (this.mode == Mode.Record)
-                {
-                    this.kinectRecorder.Record(skeletonFrame);
-                }
-
                 // Display real time?
-                if (this.mode != Mode.Replay)
+                if (this.MainWindowViewModel.Mode != KungFuNao.ViewModels.MainWindowViewModel.ControlMode.Replay)
                 {
-                    Kinect.Toolbox.Tools.GetSkeletons(skeletonFrame, ref this.skeletons);
-                    this.skeletonDisplayManager.Draw(this.skeletons, false);
+                    Kinect.Toolbox.Tools.GetSkeletons(SkeletonFrame, ref this.Skeletons);
+                    this.SkeletonDisplayManager.Draw(this.Skeletons, false);
                 }
             }
         }
 
-        /// <summary>
-        /// Save data.
-        /// </summary>
-        private void SaveData()
-        {
-            DataContractSerializer serializer = new DataContractSerializer(typeof(Scenario));
-
-            var settings = new XmlWriterSettings()
-            {
-                Indent = true,
-                IndentChars = "\t"
-            };
-
-            using (var writer = XmlWriter.Create(Preferences.SCENARIOS_FILE, settings))
-            {
-                serializer.WriteObject(writer, this.Scenario);
-            }
-        }
-
-        /// <summary>
-        /// Load data.
-        /// </summary>
-        private void LoadData()
-        {
-            try
-            {
-                using (FileStream stream = new FileStream(Preferences.SCENARIOS_FILE, FileMode.Open))
-                {
-                    DataContractSerializer deserializer = new DataContractSerializer(typeof(Scenario));
-                    this.Scenario = (Scenario)deserializer.ReadObject(stream);
-                }
-            }
-            catch (Exception e)
-            {
-                this.Scenario = new Scenario();
-            }
-        }
-
-        /// <summary>
-        /// On window closing event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void OnWindowClosed(object sender, EventArgs e)
-        {
-            // Save data.
-            this.SaveData();
-
-            this.speechRecognition.Stop();
-            this.kinectSensor.Stop();
-            this.naoTeacher.Stop();
-        }
-
-        /// <summary>
-        /// On window loaded event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void OnWindowLoaded(object sender, EventArgs e)
-        {
-            this.kinectSensor.Start();
-            this.speechRecognition.Start();
-        }
     }
 }
 
