@@ -26,15 +26,15 @@ namespace KungFuNao.Models.Nao
         {
             this.NumberOfTimesExplained++;
 
-            Proxies.TextToSpeechProxy.post.say("Move your left hand forward");
+            Proxies.TextToSpeechProxy.post.say("Move your left hand forward.");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_FORWARD);
-            Proxies.TextToSpeechProxy.post.say("And then move it backward");
+            Proxies.TextToSpeechProxy.post.say("And then move it backward.");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_BACKWARD);
         }
 
         public override void GiveFeedback(Proxies Proxies)
         {
-            Proxies.TextToSpeechProxy.say("Pay attention to your left hand, you need to stretch it out completely");
+            Proxies.TextToSpeechProxy.say("Pay attention to your left hand, you need to stretch it out completely.");
         }
     }
 }

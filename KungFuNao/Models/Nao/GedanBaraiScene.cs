@@ -116,7 +116,7 @@ namespace KungFuNao.Models.Nao
 
         public override void GiveFeedback(Proxies Proxies)
         {
-            Proxies.TextToSpeechProxy.say("Pay attention to your right hand, remember that you need to rotate it during the performance");
+            Proxies.TextToSpeechProxy.say("Pay attention to your right hand, remember that you need to rotate it during the performance.");
         }
     }
 }

@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace KungFuNao.Models.Nao
@@ -51,9 +52,9 @@ namespace KungFuNao.Models.Nao
 
         private void Run(object sender, DoWorkEventArgs e)
         {  
-            //this.WelcomeUser();
-            //this.ExplainCompleteKata();
-            //this.ExplainEveryKataMotion();
+            this.WelcomeUser();
+            this.ExplainCompleteKata();
+            this.ExplainEveryKataMotion();
             this.TrainUser();
         }
 
@@ -72,6 +73,42 @@ namespace KungFuNao.Models.Nao
         {
             this.Worker.CancelAsync();
         }
+
+        /*
+
+        private CancellationTokenSource RotatingEarsCancellationTokenSource;
+        /// <summary>
+        /// Start rotating ears.
+        /// </summary>
+        private void StartRotatingEars()
+        {
+            this.RotatingEarsCancellationTokenSource = new CancellationTokenSource();
+            var token = this.RotatingEarsCancellationTokenSource.Token;
+
+            var task = Task.Factory.StartNew(() =>
+            {
+                // do some work
+                if (token.IsCancellationRequested)
+                {
+                    // Clean up as needed here ....
+                }
+                token.ThrowIfCancellationRequested();
+            }, token);
+
+
+
+            this.Proxies.LedsProxy.post.earLedsSetAngle(36, 2, false);
+        }
+
+        /// <summary>
+        /// Stop rotating ears.
+        /// </summary>
+        private void StopRotatingEars()
+        {
+            this.RotatingEarsTask.St
+            this.Proxies.LedsProxy.on("EarLeds");
+        }
+        */
 
         public void TrainUser()
         {
@@ -208,6 +245,7 @@ namespace KungFuNao.Models.Nao
             this.IsRecording = false;
 
             this.KinectRecorder.Stop();
+            this.RecordStream.Close();
         }
 
         /// <summary>

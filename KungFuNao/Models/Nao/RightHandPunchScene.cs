@@ -39,7 +39,7 @@ namespace KungFuNao.Models.Nao
 
         public override void GiveFeedback(Proxies Proxies)
         {
-            Proxies.TextToSpeechProxy.say("Pay attention to your right hand, you need to stretch it out completely");
+            Proxies.TextToSpeechProxy.say("Pay attention to your right hand, you need to stretch it out completely.");
         }
     }
 }
