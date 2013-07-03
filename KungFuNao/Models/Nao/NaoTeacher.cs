@@ -48,6 +48,7 @@ namespace KungFuNao.Models.Nao
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
+            /*
             System.Diagnostics.Debug.WriteLine("NaoTeacher: asking confirmation...");
             String choice = this.speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
 
@@ -63,6 +64,7 @@ namespace KungFuNao.Models.Nao
             {
                 System.Diagnostics.Debug.WriteLine("NaoTeacher: No confirmation...");
             }
+             * */
 
             /*
             // Should check the following every now and then:
@@ -72,13 +74,12 @@ namespace KungFuNao.Models.Nao
             }
              * */
            
-             /*
+            
             welcomeUser();
             explainCompleteKata();
             explainEveryKataMotion();
             int trialNumber = 0;
             trainUser(trialNumber);
-             * */
         }
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

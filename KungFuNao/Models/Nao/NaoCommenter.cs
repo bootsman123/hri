@@ -63,13 +63,14 @@ namespace KungFuNao.Models.Nao
             textToSpeechProxy.say("I will try to learn you how to perform some karate motions!");
 
             textToSpeechProxy.say("Do you have any experience with Karate?");
-            string answer = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
-            switch (answer)
+            string choice = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+            switch (choice)
             {
-                case "YES":
+                case KinectSpeechRecognition.CHOICE_POSITIVE:
                     textToSpeechProxy.say("In that case this will be an easy lesson!");
                     break;
-                case "NO":
+                case KinectSpeechRecognition.CHOICE_NEGATIVE:
+                default:
                     textToSpeechProxy.say("In that case I will explain the behaviours extra good");
                     break;
             }
@@ -91,13 +92,14 @@ namespace KungFuNao.Models.Nao
         public void askUserForFeedback(KinectSpeechRecognition speech)
         {
             textToSpeechProxy.say("Did you enjoy this lesson?");
-            string answer = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
-            switch (answer)
+            string choice = speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
+            switch (choice)
             {
-                case "YES":
+                case KinectSpeechRecognition.CHOICE_POSITIVE:
                     textToSpeechProxy.say("I am happy to hear this!");
                     break;
-                case "NO":
+                case KinectSpeechRecognition.CHOICE_NEGATIVE:
+                default:
                     textToSpeechProxy.say("Aw, too bad.");
                     break;
             }
