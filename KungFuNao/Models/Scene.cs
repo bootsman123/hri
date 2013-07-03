@@ -12,6 +12,7 @@ using System.IO;
 using Aldebaran.Proxies;
 using KungFuNao.Tools;
 using KungFuNao.Models.Nao;
+using DynamicTimeWarping;
 
 namespace KungFuNao
 {
@@ -30,9 +31,11 @@ namespace KungFuNao
         [DataMember]
         public Score Score { get; set; }
 
+        public double Performance { get; set; }
+
         public int NumberOfTimesExplained { get; set; }
 
-        public List<Skeleton> Skeletons { get; set; }
+        public List<Skeleton> Skeletons { get; private set; }
 
         /// <summary>
         /// Constructor.
@@ -51,6 +54,7 @@ namespace KungFuNao
 
         private void Initialize()
         {
+            this.Performance = 0;
             this.NumberOfTimesExplained = 0;
 
             // Load skeletons.
@@ -73,6 +77,11 @@ namespace KungFuNao
         public void OnDeserialized(StreamingContext context)
         {
             this.Initialize();
+        }
+
+        public void DeterminePerformance(List<Skeleton> skeletons)
+        {
+            this.Performance = DTW<Skeleton>.Distance(this.Skeletons, skeletons, new SkeletonDistance());
         }
 
         public abstract void performDefault(Proxies Proxies);

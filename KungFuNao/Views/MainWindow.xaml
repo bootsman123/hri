@@ -63,8 +63,14 @@
             <ListBox Name="ScenarioListBox" ItemsSource="{Binding Scenario}" BorderBrush="Transparent">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Label Content="{Binding Name}"/>
-                        <!--<Image Source="{Binding TechniqueImageData}"/>-->
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} ({1})">
+                                    <Binding Path="Name"/>
+                                    <Binding Path="Performance"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock> <!-- Content="{Binding Name}"/>-->
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

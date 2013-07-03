@@ -78,11 +78,11 @@ namespace KungFuNao.ViewModels
             this.Proxies.KinectSensor.SkeletonFrameReady += this.NaoTeacher.KinectSensorSkeletonFrameReady;
 
 
-            /*
-            this.Scenario.Add(new Scene("Left Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(30, 5)));
-            this.Scenario.Add(new Scene("Left Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(40, 15)));
-            this.Scenario.Add(new Scene("Right Hand Punch", "C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(30, 5)));
-            */
+          
+            //this.Scenario.Add(new LeftHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v1.kinect", new Score(20, 5)));
+            //this.Scenario.Add(new GedanBaraiScene("C:\\Users\\bootsman\\Desktop\\data.v2.kinect", new Score(30, 10)));
+            //this.Scenario.Add(new RightHandPunchScene("C:\\Users\\bootsman\\Desktop\\data.v3.kinect", new Score(20, 5)));
+            
         }
         
         /// <summary>
@@ -241,6 +241,10 @@ namespace KungFuNao.ViewModels
                 {
                     return;
                 }
+
+                var skeletons = skeletonFrame.GetSkeletons().Where(skeleton => skeleton.TrackingState == SkeletonTrackingState.Tracked);
+
+                System.Diagnostics.Debug.WriteLine("Number of skeletons per frame: " + skeletons.Count());
 
                 // Record?
                 if (this.Mode == ControlMode.Record)
