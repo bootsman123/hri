@@ -50,28 +50,10 @@ namespace KungFuNao.Models.Nao
         }
 
         private void Run(object sender, DoWorkEventArgs e)
-        {
-            /*
-            System.Diagnostics.Debug.WriteLine("NaoTeacher: asking confirmation...");
-            String choice = this.speech.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
-
-            if (KinectSpeechRecognition.CHOICE_POSITIVE.Equals(choice))
-            {
-                System.Diagnostics.Debug.WriteLine("NaoTeacher: Positive confirmation =)!");
-            }
-            else if (KinectSpeechRecognition.CHOICE_NEGATIVE.Equals(choice))
-            {
-                System.Diagnostics.Debug.WriteLine("NaoTeacher: Negative confirmation :(.");
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("NaoTeacher: No confirmation...");
-            }
-            */
-           
-            this.WelcomeUser();
-            this.ExplainCompleteKata();
-            this.ExplainEveryKataMotion();
+        {  
+            //this.WelcomeUser();
+            //this.ExplainCompleteKata();
+            //this.ExplainEveryKataMotion();
             this.TrainUser();
         }
 

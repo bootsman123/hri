@@ -242,9 +242,9 @@ namespace KungFuNao.ViewModels
                     return;
                 }
 
-                var skeletons = skeletonFrame.GetSkeletons().Where(skeleton => skeleton.TrackingState == SkeletonTrackingState.Tracked);
+                //var skeletons = skeletonFrame.GetSkeletons().Where(skeleton => skeleton.TrackingState == SkeletonTrackingState.Tracked);
 
-                System.Diagnostics.Debug.WriteLine("Number of skeletons per frame: " + skeletons.Count());
+                //System.Diagnostics.Debug.WriteLine("Number of skeletons per frame: " + skeletons.Count());
 
                 // Record?
                 if (this.Mode == ControlMode.Record)
