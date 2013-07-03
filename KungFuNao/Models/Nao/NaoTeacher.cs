@@ -27,7 +27,6 @@ namespace KungFuNao.Models.Nao
         private Scenario Scenario;
 
         private NaoCommenter NaoCommenter;
-
         private int CurrentTrial;
 
         private Stream RecordStream;
@@ -80,11 +79,11 @@ namespace KungFuNao.Models.Nao
 
             if (this.HasGoodPerformance(performances))
             {
-                this.NaoCommenter.sayGoodbyeGoodPerformance();
+                this.NaoCommenter.GoodbyeGoodPerformance();
             }
             else if (this.CurrentTrial > NaoTeacher.MAXIMUM_AMOUNT_OF_TRIALS)
             {
-                this.NaoCommenter.sayGoodbyeLongPerformance();
+                this.NaoCommenter.GoodbyeLongPerformance();
             }
             else
             {
@@ -100,9 +99,21 @@ namespace KungFuNao.Models.Nao
             int index = performances.IndexOf(performances.Max());
             Scene worstScene = this.Scenario.ElementAt(index);
 
-            this.NaoCommenter.explainWhileMoving("Your " + worstScene.Name + " needs some improvement, let me explain the " + worstScene.Name + " again");
-            worstScene.giveFeedbackToUser(this.Proxies);
-            worstScene.explainToUser(this.Proxies);
+            String message = "Your " + worstScene.Name + " needs some improvement, let me explain it again.";
+
+            if (worstScene.NumberOfTimesExplained > 1)
+            {
+                message = "You are really having trouble with " + worstScene.Name + ". I will explain it again.";
+            }
+            else if (worstScene.NumberOfTimesExplained > 2)
+            {
+                message = "I have explained " + worstScene.Name + " several times already. Are you sure you are paying attention? Let me explain it again.";
+            }
+
+            this.NaoCommenter.ExplainWhileMoving(message);
+            worstScene.NumberOfTimesExplained++;
+            worstScene.GiveFeedback(this.Proxies);
+            worstScene.Explain(this.Proxies);
         }
 
         private bool HasGoodPerformance(List<Double> performances)
@@ -121,15 +132,13 @@ namespace KungFuNao.Models.Nao
 
         private void WelcomeUser()
         {
-            this.NaoCommenter.welcomeUser();
-            this.NaoCommenter.explainKarateToUser();
+            this.NaoCommenter.WelcomeUser();
+            this.NaoCommenter.ExplainScenario();
         }
 
         private List<Double> EvaluateScenario()
         {
-            System.Diagnostics.Debug.WriteLine("NaoTeacher::evaluateKata()");
-
-            this.NaoCommenter.startEvaluationOfWholeKata();
+            this.NaoCommenter.StartEvaluationOfWholeScenario(this.CurrentTrial);
 
             var performances = new List<Double>();
             var distance = new SkeletonDistance();
@@ -137,7 +146,7 @@ namespace KungFuNao.Models.Nao
             foreach (Scene scene in this.Scenario)
             {
                 this.StartRecording();
-                scene.performDefault(this.Proxies);
+                scene.PerformDefault(this.Proxies);
                 this.StopRecording();
 
                 // Load data.
@@ -153,25 +162,26 @@ namespace KungFuNao.Models.Nao
 
         private void ExplainCompleteKata()
         {
-            this.NaoCommenter.explainWhileMoving("Today we are going to focus on a robot technique, it is used to defend against evil robots");
-            this.NaoCommenter.explainWhileStandingWhileWaiting("The complete technique looks like this");
+            this.NaoCommenter.ExplainWhileMoving("Today we are going to focus on a robot technique, it is used to defend against evil robots.");
+            this.NaoCommenter.ExplainWhileStandingAndWaiting("The complete technique looks as follows.");
 
             foreach (Scene scene in this.Scenario)
             {
-                scene.performDefault(this.Proxies);
+                scene.PerformDefault(this.Proxies);
             }
         }
 
         private void ExplainEveryKataMotion()
         {
-            this.NaoCommenter.explainWithMovement("I will now explain every motion you need to perfom.", NaoBehaviors.BEHAVIOR_EXPLAIN2);
-            this.NaoCommenter.explainWhileStandingWhileWaiting("Please move your body along with my body! Note that you have to mirror my body. ");
-            //this.NaoCommenter.explainWhileStandingWhileWaiting("I hope you are ready!");
+            this.NaoCommenter.ExplainWithMovement("I will now explain every motion you need to perfom.", NaoBehaviors.BEHAVIOR_EXPLAIN2);
+            this.NaoCommenter.ExplainWhileStandingAndWaiting("Please move your body along with my body!");
+
             int movementNumber = 0;
+
             foreach (Scene scene in this.Scenario)
             {
-                this.NaoCommenter.introduceMovement(movementNumber++);
-                scene.explainToUser(this.Proxies);
+                this.NaoCommenter.IntroduceMovement(movementNumber++);
+                scene.Explain(this.Proxies);
             }
         }
 

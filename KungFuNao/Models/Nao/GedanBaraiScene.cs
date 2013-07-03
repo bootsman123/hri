@@ -13,21 +13,21 @@ namespace KungFuNao.Models.Nao
     public class GedanBaraiScene : Scene
     {
         public GedanBaraiScene(string fileName, Score score)
-            : base("Gedan Barai", fileName, score)
+            : base("Defensive Block", fileName, score)
         {
         }
 
-        public override void performDefault(Proxies Proxies)
+        public override void PerformDefault(Proxies Proxies)
         {
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI);
         }
 
-        public override void explainToUser(Proxies Proxies)
+        public override void Explain(Proxies Proxies)
         {
             this.NumberOfTimesExplained++;
 
             Proxies.TextToSpeechProxy.post.say("This motion is called " + this.Name + ", it is used to block an incoming kick");
-            this.performDefault(Proxies);
+            this.PerformDefault(Proxies);
             Proxies.TextToSpeechProxy.say("I will break it down for you in three steps");
 
             explanation(Proxies);
@@ -39,7 +39,7 @@ namespace KungFuNao.Models.Nao
                 explainLeftArm(Proxies);
                 explainRightArm(Proxies);
                 Proxies.TextToSpeechProxy.say("By combining these motions you get this.");
-                this.performDefault(Proxies);
+                this.PerformDefault(Proxies);
 
                 Proxies.TextToSpeechProxy.say("Do you understand this motion now?");
                 string choicePositiveNegative = Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
@@ -114,7 +114,7 @@ namespace KungFuNao.Models.Nao
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
         }
 
-        public override void giveFeedbackToUser(Proxies Proxies)
+        public override void GiveFeedback(Proxies Proxies)
         {
             Proxies.TextToSpeechProxy.say("Pay attention to your right hand, remember that you need to rotate it during the performance");
         }

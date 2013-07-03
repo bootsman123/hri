@@ -97,9 +97,9 @@ namespace KungFuNao
             this.Performance = DTW<Skeleton>.Distance(this.Skeletons, skeletons, new SkeletonDistance());
         }
 
-        public abstract void performDefault(Proxies Proxies);
-        public abstract void explainToUser(Proxies Proxies);
-        public abstract void giveFeedbackToUser(Proxies Proxies);
+        public abstract void PerformDefault(Proxies Proxies);
+        public abstract void Explain(Proxies Proxies);
+        public abstract void GiveFeedback(Proxies Proxies);
 
 
         /// <summary>

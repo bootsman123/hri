@@ -17,12 +17,12 @@ namespace KungFuNao.Models.Nao
         {
         }
 
-        public override void performDefault(Proxies Proxies)
+        public override void PerformDefault(Proxies Proxies)
         {
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_CONTINUOUS_PUNCH);
         }
 
-        public override void explainToUser(Proxies Proxies)
+        public override void Explain(Proxies Proxies)
         {
             this.NumberOfTimesExplained++;
 
@@ -37,7 +37,7 @@ namespace KungFuNao.Models.Nao
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_RIGHT_HAND_PUNCH_BACKWARD);
         }
 
-        public override void giveFeedbackToUser(Proxies Proxies)
+        public override void GiveFeedback(Proxies Proxies)
         {
             Proxies.TextToSpeechProxy.say("Pay attention to your right hand, you need to stretch it out completely");
         }
