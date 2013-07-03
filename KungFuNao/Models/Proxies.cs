@@ -44,12 +44,15 @@ namespace KungFuNao.Models
         /// </summary>
         public void Start()
         {
+            System.Diagnostics.Debug.WriteLine("Proxies::Start()");
+
             this.KinectSensor.Start();
-            this.KinectSpeechRecognition.Start();
 
             // Enabled streams.
             this.KinectSensor.ColorStream.Enable(this.Preferences.ColorImageFormat);
             this.KinectSensor.SkeletonStream.Enable();
+
+            this.KinectSpeechRecognition.Start();
         }
 
         /// <summary>
@@ -57,6 +60,8 @@ namespace KungFuNao.Models
         /// </summary>
         public void Stop()
         {
+            System.Diagnostics.Debug.WriteLine("Proxies::Stop()");
+
             //this.TextToSpeechProxy.stopAll();
             //this.BehaviorManagerProxy.stopAllBehaviors();
 
@@ -64,6 +69,7 @@ namespace KungFuNao.Models
             this.KinectSensor.Stop();
         }
 
+        #region Properties.
         public KinectSensor KinectSensor
         {
             get { return this.kinectSensor; }
@@ -103,6 +109,7 @@ namespace KungFuNao.Models
                 this.OnPropertyChanged("BehaviorManagerProxy");
             }
         }
+        #endregion
 
         /// <summary>
         /// On property changed.

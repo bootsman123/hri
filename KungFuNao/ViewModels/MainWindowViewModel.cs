@@ -316,6 +316,7 @@ namespace KungFuNao.ViewModels
             this.Proxies.Start();
         }
 
+        #region Fields.
         public ImageSource Image
         {
             get { return this.image; }
@@ -325,6 +326,7 @@ namespace KungFuNao.ViewModels
                 this.OnPropertyChanged("Image");
             }
         }
+        #endregion
 
         /// <summary>
         /// On property changed.
