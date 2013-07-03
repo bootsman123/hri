@@ -26,8 +26,7 @@ namespace KungFuNao.Models.Nao
         {
             this.NumberOfTimesExplained++;
 
-            Proxies.TextToSpeechProxy.say("This is the " + this.Name);
-            Proxies.TextToSpeechProxy.post.say("Just move your left hand forward");
+            Proxies.TextToSpeechProxy.post.say("Move your left hand forward");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_FORWARD);
             Proxies.TextToSpeechProxy.post.say("And then move it backward");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_LEFT_HAND_PUNCH_BACKWARD);

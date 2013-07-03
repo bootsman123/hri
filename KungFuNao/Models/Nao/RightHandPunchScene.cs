@@ -26,7 +26,7 @@ namespace KungFuNao.Models.Nao
         {
             this.NumberOfTimesExplained++;
 
-            Proxies.TextToSpeechProxy.say("This motion is called the " + this.Name);
+            //Proxies.TextToSpeechProxy.say("This motion is called the " + this.Name);
 
             // First step.
             Proxies.TextToSpeechProxy.post.say("You move your right hand forward");

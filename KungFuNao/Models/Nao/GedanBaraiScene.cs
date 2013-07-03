@@ -34,8 +34,7 @@ namespace KungFuNao.Models.Nao
 
             if (NumberOfTimesExplained > 1)
             {
-                Proxies.TextToSpeechProxy.say("I already explained this motion.");
-                Proxies.TextToSpeechProxy.post.say("I see you do not yet really get this motion, let me explain both arms seperately");
+                Proxies.TextToSpeechProxy.post.say("I already explained this motion but I see you do not yet really get this motion, let me explain both arms seperately");
                 Proxies.BehaviorManagerProxy.runBehavior("naos-life-channel/stand_scratchHead1");
                 explainLeftArm(Proxies);
                 explainRightArm(Proxies);
@@ -74,17 +73,15 @@ namespace KungFuNao.Models.Nao
         {
             // First step.
             Proxies.TextToSpeechProxy.say("Bring your right hand towards your left ear.");
+            Proxies.TextToSpeechProxy.say("While moving your right hand you also need to move your left arm forward.");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART1);
             Proxies.TextToSpeechProxy.say("");
-            Proxies.TextToSpeechProxy.say("While moving your right hand you also need to move your left arm forward.");
-
+            
             // Second step.
             Proxies.TextToSpeechProxy.say("Then more your right hand forward in a sweeping motion, while bringing your left hand next to your upper body.");
-            //Proxies.TextToSpeechProxy.say("Here we go!");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2);
 
             // Third step.
-          //  Proxies.TextToSpeechProxy.say("There is something important about your right hand.");
             Proxies.TextToSpeechProxy.post.say("Make your to rotate your right hand during this motion.");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
 
