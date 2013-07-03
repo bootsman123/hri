@@ -79,14 +79,15 @@ namespace KungFuNao.Models.Nao
             Proxies.TextToSpeechProxy.say("While moving your right hand you also need to move your left arm forward.");
 
             // Second step.
-            Proxies.TextToSpeechProxy.say("Now more your right hand forward in a sweeping motion, while bringing your left hand next to your upper body.");
-            Proxies.TextToSpeechProxy.say("Here we go!");
+            Proxies.TextToSpeechProxy.say("Then more your right hand forward in a sweeping motion, while bringing your left hand next to your upper body.");
+            //Proxies.TextToSpeechProxy.say("Here we go!");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2);
 
             // Third step.
-            Proxies.TextToSpeechProxy.say("There is something important about your right hand.");
+          //  Proxies.TextToSpeechProxy.say("There is something important about your right hand.");
             Proxies.TextToSpeechProxy.post.say("Make your to rotate your right hand during this motion.");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
+
         }
 
         private void explainLeftArm(Proxies Proxies)
@@ -107,11 +108,11 @@ namespace KungFuNao.Models.Nao
 
             // Second step.
             Proxies.TextToSpeechProxy.say("Now more your right hand forward in a sweeping motion");
-            Proxies.TextToSpeechProxy.say("Here we go!");
+          //  Proxies.TextToSpeechProxy.say("Here we go!");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART2_RIGHT_ARM);
 
             // Third step.
-            Proxies.TextToSpeechProxy.say("There is something important about your right hand");
+           // Proxies.TextToSpeechProxy.say("There is something important about your right hand");
             Proxies.TextToSpeechProxy.say("Make your to rotate your right hand while doing this");
             Proxies.BehaviorManagerProxy.runBehavior(NaoBehaviors.BEHAVIOR_GEDAN_BARAI_PART3);
         }
