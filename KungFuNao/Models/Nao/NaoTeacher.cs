@@ -277,7 +277,12 @@ namespace KungFuNao.Models.Nao
                 // Record?
                 if (this.IsRecording)
                 {
-                    this.KinectRecorder.Record(skeletonFrame);
+                    // Extra check.
+                    if (this.RecordStream != null &&
+                        this.RecordStream.CanWrite)
+                    {
+                        this.KinectRecorder.Record(skeletonFrame);
+                    }
                 }
             }
         }
