@@ -24,7 +24,7 @@ namespace KungFuNao.Models.Nao
         private TextToSpeechProxy textToSpeechProxy;
         private BehaviorManagerProxy behaviorManagerProxy;
         private KinectSpeechRecognition speech;
-
+        private LedsProxy ledsProxy; 
         private NaoCommenter naoCommenter;
         private Scenario scenario;
 
@@ -32,10 +32,10 @@ namespace KungFuNao.Models.Nao
         private KinectRecorder kinectRecorder;
         private bool isRecording = false;
 
-        public NaoTeacher(TextToSpeechProxy textToSpeechProxy, BehaviorManagerProxy behaviorManagerProxy, KinectSpeechRecognition speech, Scenario scenario)
+        public NaoTeacher(TextToSpeechProxy textToSpeechProxy, BehaviorManagerProxy behaviorManagerProxy, KinectSpeechRecognition speech, Scenario scenario, LedsProxy ledsProxy)
         {
             this.textToSpeechProxy = textToSpeechProxy;
-            
+            this.ledsProxy = ledsProxy;
             this.behaviorManagerProxy = behaviorManagerProxy;
             this.naoCommenter = new NaoCommenter(textToSpeechProxy, behaviorManagerProxy);
             this.speech = speech;
@@ -45,20 +45,17 @@ namespace KungFuNao.Models.Nao
             worker.RunWorkerCompleted += WorkerCompleted;
             worker.WorkerSupportsCancellation = true;
 
-
-
-            // Replace "127.0.0.1" with the IP of your NAO
-            leds = ALProxy("ALLeds","127.0.0.1",9559);
+        
             // Create a new group
             List<String> names = new List<String>{
             "Face/Led/Red/Left/0Deg/Actuator/Value",
             "Face/Led/Red/Left/90Deg/Actuator/Value",
             "Face/Led/Red/Left/180Deg/Actuator/Value",
             "Face/Led/Red/Left/270Deg/Actuator/Value"};
-            leds.createGroup("MyGroup",names);
+            ledsProxy.createGroup("MyGroup",names);
             // Switch the new group on
-            leds.on("MyGroup");
-
+            ledsProxy.on("MyGroup");
+            
 
         }
 

@@ -54,7 +54,9 @@ namespace KungFuNao
 
         private KinectSpeechRecognition speechRecognition;
         private TextToSpeechProxy textToSpeechProxy;
+        private LedsProxy ledsProxy; 
         private BehaviorManagerProxy behaviorManagerProxy;
+
 
         private NaoTeacher naoTeacher;
         #endregion
@@ -118,8 +120,9 @@ namespace KungFuNao
             this.textToSpeechProxy = new TextToSpeechProxy(Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.behaviorManagerProxy = new BehaviorManagerProxy(this.Preferences.NaoIpAddress, this.Preferences.NaoPort);
             this.speechRecognition = new KinectSpeechRecognition(this.kinectSensor);
-            
-            this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.Scenario);
+            this.ledsProxy = new LedsProxy(Preferences.NAO_IP_ADDRESS, Preferences.NaoPort);
+
+            this.naoTeacher = new NaoTeacher(this.textToSpeechProxy, this.behaviorManagerProxy, this.speechRecognition, this.Scenario, this.ledsProxy);
             this.kinectSensor.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(this.naoTeacher.kinectSensorSkeletonFrameReady);
         }
 
