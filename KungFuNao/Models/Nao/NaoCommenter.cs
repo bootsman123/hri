@@ -96,7 +96,9 @@ namespace KungFuNao.Models.Nao
 
         public void sayGoodbyeLongPerformance()
         {
-            this.Proxies.TextToSpeechProxy.say("You still need some more practice, keep on doing this everyday");
+            this.Proxies.TextToSpeechProxy.say("You still need some more practice, but you have to do this in your own time");
+            this.explainWhileShowingMuscles("Perform these kata's everyday to become stronger");
+            
             askUserForFeedback();
         }
 
