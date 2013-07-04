@@ -98,7 +98,7 @@ namespace KungFuNao.Tools
         private Dictionary<String, List<String>> BuildDictionary()
         {
             Dictionary<String, List<String>> dictionary = new Dictionary<String, List<String>>();
-            dictionary.Add(KinectSpeechRecognition.CHOICE_POSITIVE, new List<String> { "yes", "sure", "yeah", "please", "ok", "okay" });
+            dictionary.Add(KinectSpeechRecognition.CHOICE_POSITIVE, new List<String> { "yes", "sure", "yeah", "please", "ok", "okay", "little", "a bit" });
             dictionary.Add(KinectSpeechRecognition.CHOICE_NEGATIVE, new List<String> { "no", "nope" });
             dictionary.Add(KinectSpeechRecognition.CHOICE_LEFT, new List<String> { "left", "left hand" });
             dictionary.Add(KinectSpeechRecognition.CHOICE_RIGHT, new List<String> { "right", "right hand" });
