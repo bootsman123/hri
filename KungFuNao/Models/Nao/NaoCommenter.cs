@@ -134,6 +134,8 @@ namespace KungFuNao.Models.Nao
                     this.Proxies.TextToSpeechProxy.say("Aw, too bad.");
                     break;
             }
+            this.Proxies.TextToSpeechProxy.say("I hope to see you next time");
+            this.Proxies.TextToSpeechProxy.say("Goodbye!");
         }
 
         private void SpeakAndMove(String text, String movement)
