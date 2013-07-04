@@ -61,24 +61,24 @@ namespace KungFuNao.Models.Nao
             this.Proxies.BehaviorManagerProxy.runBehavior("karate/stand");
             this.Proxies.TextToSpeechProxy.post.say("Welcome to my robodojo.");
             this.Proxies.BehaviorManagerProxy.post.runBehavior(NaoBehaviors.BEHAVIOR_WELCOME);
-            this.Proxies.TextToSpeechProxy.post.say("I hope you are ready for your robot karate training!");
+            this.ExplainWhileMoving("I hope you are ready for your robot karate training!");
         }
 
         public void ExplainScenario()
         {
-            this.Proxies.TextToSpeechProxy.say("Robot Karate is a special martial art where the user performs movements to defend himself againest evil robots.");
+            this.ExplainWhileMoving("Robot Karate is a special martial art where the user performs movements to defend himself againest evil robots.");
             this.ExplainWhileFlexing("When performing a lot of robot karate you will become stronger");
-            this.Proxies.TextToSpeechProxy.say("I will try to learn you how to perform some robot karate movements!");
-            this.Proxies.TextToSpeechProxy.say("Do you have any experience with robot karate?");
+            this.ExplainWhileMoving("I will try to learn you how to perform some robot karate movements!");
+            this.ExplainWhileMoving("Do you have any experience with robot karate?");
 
             string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
             switch (choice)
             {
                 case KinectSpeechRecognition.CHOICE_POSITIVE:
-                    this.Proxies.TextToSpeechProxy.say("In that case this will be an easy lesson!");
+                    this.ExplainWhileMoving("In that case this will be an easy lesson!");
                     break;
                 case KinectSpeechRecognition.CHOICE_NEGATIVE:
-                    this.Proxies.TextToSpeechProxy.say("In that case I will explain the behaviors extra good.");
+                    this.ExplainWhileMoving("In that case I will explain the behaviors extra good.");
                     break;
                 default:
                     this.ExplainWhileMoving("I'm sorry, I didn't hear you. Feel free to speak to me!");
