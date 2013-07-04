@@ -73,6 +73,7 @@ namespace KungFuNao.Models.Nao
             this.StartRotatingEars();
             string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
             this.StopRotatingEars();
+
             switch (choice)
             {
                 case KinectSpeechRecognition.CHOICE_POSITIVE:
