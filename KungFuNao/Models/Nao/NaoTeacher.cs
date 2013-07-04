@@ -113,6 +113,7 @@ namespace KungFuNao.Models.Nao
         public void TrainUser()
         {
             List<Double> performances = this.EvaluateScenario();
+            NaoCommenter.ExplainWhileThinking("Well, let me think about how well you performed");
 
             if (this.HasGoodPerformance(performances))
             {
