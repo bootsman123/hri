@@ -41,6 +41,8 @@ namespace KungFuNao.Models.Nao
             this.Proxies = Proxies;
             this.Scenario = Scenario;
 
+            this.Proxies.LedsProxy.off("EarLeds");
+
             this.NaoCommenter = new NaoCommenter(this.Proxies);
 
             this.CurrentTrial = 0;
@@ -74,41 +76,10 @@ namespace KungFuNao.Models.Nao
             this.Worker.CancelAsync();
         }
 
-        /*
+        
 
-        private CancellationTokenSource RotatingEarsCancellationTokenSource;
-        /// <summary>
-        /// Start rotating ears.
-        /// </summary>
-        private void StartRotatingEars()
-        {
-            this.RotatingEarsCancellationTokenSource = new CancellationTokenSource();
-            var token = this.RotatingEarsCancellationTokenSource.Token;
-
-            var task = Task.Factory.StartNew(() =>
-            {
-                // do some work
-                if (token.IsCancellationRequested)
-                {
-                    // Clean up as needed here ....
-                }
-                token.ThrowIfCancellationRequested();
-            }, token);
-
-
-
-            this.Proxies.LedsProxy.post.earLedsSetAngle(36, 2, false);
-        }
-
-        /// <summary>
-        /// Stop rotating ears.
-        /// </summary>
-        private void StopRotatingEars()
-        {
-            this.RotatingEarsTask.St
-            this.Proxies.LedsProxy.on("EarLeds");
-        }
-        */
+        
+       
 
         public void TrainUser()
         {
