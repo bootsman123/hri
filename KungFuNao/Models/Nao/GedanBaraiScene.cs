@@ -1,5 +1,6 @@
 ﻿using Aldebaran.Proxies;
 using KungFuNao.Tools;
+using Microsoft.Kinect;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,14 @@ namespace KungFuNao.Models.Nao
             : base("Defensive Block", fileName, score)
         {
         }
+
+        /*
+        public void override DeterminePerformance(List<Skeleton> skeletons)
+        {
+            base.DeterminePerformance(skeletons);
+            this.Performance *= 1.5;
+        }
+         * */
 
         public override void PerformDefault(Proxies Proxies)
         {

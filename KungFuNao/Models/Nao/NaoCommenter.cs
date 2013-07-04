@@ -79,7 +79,7 @@ namespace KungFuNao.Models.Nao
                     this.ExplainWhileMoving("In that case this will be an easy lesson!");
                     break;
                 case KinectSpeechRecognition.CHOICE_NEGATIVE:
-                    this.ExplainWhileMoving("In that case I will explain the behaviors extra good.");
+                    this.ExplainWhileMoving("In that case I will explain the behaviors extra well.");
                     break;
                 default:
                     this.ExplainWhileMoving("I'm sorry, I didn't hear you. Feel free to speak to me!");
