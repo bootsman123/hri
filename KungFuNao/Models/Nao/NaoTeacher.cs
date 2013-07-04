@@ -41,8 +41,6 @@ namespace KungFuNao.Models.Nao
             this.Proxies = Proxies;
             this.Scenario = Scenario;
 
-            this.Proxies.LedsProxy.off("EarLeds");
-
             this.NaoCommenter = new NaoCommenter(this.Proxies);
 
             this.CurrentTrial = 0;
@@ -76,15 +74,10 @@ namespace KungFuNao.Models.Nao
             this.Worker.CancelAsync();
         }
 
-        
-
-        
-       
-
         public void TrainUser()
         {
             List<Double> performances = this.EvaluateScenario();
-            NaoCommenter.ExplainWhileThinking("Well, let me think about how well you performed");
+            NaoCommenter.ExplainWhileThinking("Let me think about how well you performed.");
 
             if (this.HasGoodPerformance(performances))
             {
@@ -171,7 +164,7 @@ namespace KungFuNao.Models.Nao
 
         private void ExplainCompleteKata()
         {
-            this.NaoCommenter.ExplainWhileMoving("Today we are going to focus on a robot technique, it is used to defend against evil robots.");
+            this.NaoCommenter.ExplainWhileMoving("Today we are going to focus on a robot technique");
             this.NaoCommenter.ExplainWhileStandingAndWaiting("The complete technique looks as follows.");
 
             foreach (Scene scene in this.Scenario)
@@ -250,10 +243,12 @@ namespace KungFuNao.Models.Nao
                 if (this.IsRecording)
                 {
                     // Extra check.
-                    if (this.RecordStream != null &&
-                        this.RecordStream.CanWrite)
+                    try
                     {
                         this.KinectRecorder.Record(skeletonFrame);
+                    }
+                    catch (ObjectDisposedException)
+                    {
                     }
                 }
             }

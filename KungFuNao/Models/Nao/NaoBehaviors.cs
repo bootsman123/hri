@@ -65,7 +65,7 @@ namespace KungFuNao.Models.Nao
             NaoBehaviors.BEHAVIOR_SHOW_MUSCLES1, 
             NaoBehaviors.BEHAVIOR_SHOW_MUSCLES2, 
             NaoBehaviors.BEHAVIOR_SHOW_MUSCLES3, 
-            NaoBehaviors.BEHAVIOR_SHOW_MUSCLES4, 
+          //  NaoBehaviors.BEHAVIOR_SHOW_MUSCLES4, 
             NaoBehaviors.BEHAVIOR_SHOW_MUSCLES5, 
             NaoBehaviors.BEHAVIOR_SHOW_MUSCLES6
         };
