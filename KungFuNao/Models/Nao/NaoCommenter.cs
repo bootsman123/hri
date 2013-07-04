@@ -136,6 +136,13 @@ namespace KungFuNao.Models.Nao
             int randomBehavior = random.Next(NaoBehaviors.MUSCLE_MOVEMENTS.Count);
             SpeakAndMove(toExplainText, NaoBehaviors.MUSCLE_MOVEMENTS[randomBehavior]);
         }
+        public void ExplainWhileThinking(String toExplainText)
+        {
+            Random random = new Random();
+            List<String> listOfBehaviours = NaoBehaviors.THINKING_MOVEMENTS;
+            int randomBehavior = random.Next(listOfBehaviours.Count);
+            SpeakAndMove(toExplainText, listOfBehaviours[randomBehavior]);
+        }
 
         public void ExplainWhileStandingAndWaiting(String toExplainText)
         {

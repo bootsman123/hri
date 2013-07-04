@@ -80,8 +80,13 @@ namespace KungFuNao.Models.Nao
         public static String BEHAVIOR_THINK2 = "naos-life-channel/stand_think2";
         public static String BEHAVIOR_THINK3 = "naos-life-channel/stand_think3";
         public static String BEHAVIOR_THINK4 = "naos-life-channel/stand_think4";
-    
-    
+
+        public static List<String> THINKING_MOVEMENTS = new List<String> { 
+            NaoBehaviors.BEHAVIOR_THINK1,
+            NaoBehaviors.BEHAVIOR_THINK2,
+            NaoBehaviors.BEHAVIOR_THINK3,
+            NaoBehaviors.BEHAVIOR_THINK4
+        };
 
         public static String GOOD_PERFORMANCE1 = "naos-life-channel/stand_proud1";
 
