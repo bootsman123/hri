@@ -1,0 +1,22 @@
+digraph userStateDiagram{
+ welcome -> explain_kata
+ explain_kata -> explain_parts
+ explain_parts -> record_complete_kata
+ record_complete_kata -> evaluate
+ 
+ evaluate -> too_many_times 
+ too_many_times -> end
+ evaluate -> perfect_performance
+ perfect_performance -> end
+
+ evaluate -> not_perfect_performance
+ not_perfect_performance -> explain_individual_part
+ explain_individual_part -> record_complete_kata
+
+
+
+ //Individual nodes
+ perfect_performance[shape="box"]
+ too_many_times[shape="box"]
+ not_perfect_performance[shape="box"]
+}
