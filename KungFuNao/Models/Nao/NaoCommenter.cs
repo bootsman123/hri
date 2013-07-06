@@ -73,6 +73,7 @@ namespace KungFuNao.Models.Nao
             this.StartRotatingEars();
             string choice = this.Proxies.KinectSpeechRecognition.WaitForChoice(KinectSpeechRecognition.CHOICES_POSITIVE_NEGATIVE);
             this.StopRotatingEars();
+
             switch (choice)
             {
                 case KinectSpeechRecognition.CHOICE_POSITIVE:
@@ -133,7 +134,9 @@ namespace KungFuNao.Models.Nao
                     this.Proxies.TextToSpeechProxy.say("Aw, too bad.");
                     break;
             }
-            this.Proxies.TextToSpeechProxy.post.say("This is the end of the lesson. Goodbye!");
+
+            this.Proxies.TextToSpeechProxy.say("I hope to see you next time");
+            this.Proxies.TextToSpeechProxy.say("Goodbye!");
         }
 
         private void SpeakAndMove(String text, String movement)
