@@ -94,7 +94,14 @@ namespace KungFuNao
 
         public void DeterminePerformance(List<Skeleton> skeletons)
         {
-            this.Performance = DTW<Skeleton>.Distance(this.Skeletons, skeletons, new SkeletonDistance());
+            try
+            {
+                this.Performance = DTW<Skeleton>.Distance(this.Skeletons, skeletons, new SkeletonDistance());
+            }
+            catch (Exception)
+            {
+                this.Performance = 100;
+            }
         }
 
         public abstract void PerformDefault(Proxies Proxies);

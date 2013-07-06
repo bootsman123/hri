@@ -20,7 +20,7 @@ namespace KungFuNao.Models.Nao
     {
         private readonly BackgroundWorker Worker = new BackgroundWorker();
 
-        public static int MAXIMUM_AMOUNT_OF_TRIALS = 3;
+        public static int MAXIMUM_AMOUNT_OF_TRIALS = 2;
 
         #region Fields.
         private Preferences Preferences;
@@ -138,6 +138,7 @@ namespace KungFuNao.Models.Nao
             this.NaoCommenter.ExplainScenario();
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private List<Double> EvaluateScenario()
         {
             this.NaoCommenter.StartEvaluationOfWholeScenario(this.CurrentTrial);
@@ -147,12 +148,34 @@ namespace KungFuNao.Models.Nao
 
             foreach (Scene scene in this.Scenario)
             {
-                this.StartRecording();
+                try
+                {
+                    this.StartRecording();
+                }
+                catch (Exception)
+                {
+                }
+
                 scene.PerformDefault(this.Proxies);
-                this.StopRecording();
+
+                try
+                {
+                    this.StopRecording();
+                }
+                catch (Exception)
+                {
+                }
 
                 // Load data.
-                List<Skeleton> skeletons = this.LoadRecording();
+                List<Skeleton> skeletons = new List<Skeleton>();
+
+                try
+                {
+                    skeletons = this.LoadRecording();
+                }
+                catch (Exception)
+                {
+                }
 
                 // Calculate performance.
                 scene.DeterminePerformance(skeletons);
@@ -197,6 +220,8 @@ namespace KungFuNao.Models.Nao
             this.RecordStream = new BufferedStream(new FileStream(this.Preferences.KinectDataFile, FileMode.Create));
             this.KinectRecorder = new KinectRecorder(KinectRecordOptions.Skeletons, this.RecordStream);
 
+            //this.Preferences.KinectDataFile
+
             this.IsRecording = true;
         }
 
@@ -217,8 +242,11 @@ namespace KungFuNao.Models.Nao
         /// Load recording.
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.Synchronized)]
         private List<Skeleton> LoadRecording()
         {
+            //this.Preferences.KinectDataFile
+
             using (Stream stream = new BufferedStream(new FileStream(this.Preferences.KinectDataFile, FileMode.Open)))
             {
                 return Tools.SkeletonRecordingConverter.FromStream(stream);
@@ -247,7 +275,7 @@ namespace KungFuNao.Models.Nao
                     {
                         this.KinectRecorder.Record(skeletonFrame);
                     }
-                    catch (ObjectDisposedException)
+                    catch (Exception)
                     {
                     }
                 }

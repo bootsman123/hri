@@ -39,7 +39,7 @@ namespace KungFuNao.Tools
                 // Unneeded information for the converter cause.
                 long timeStamp = reader.ReadInt64();
                 SkeletonTrackingMode trackingMode = (SkeletonTrackingMode)reader.ReadInt32();
-                Tuple<float, float, float, float>  floorClipPlane = new Tuple<float, float, float, float>(
+                Tuple<float, float, float, float> floorClipPlane = new Tuple<float, float, float, float>(
                     reader.ReadSingle(), reader.ReadSingle(),
                     reader.ReadSingle(), reader.ReadSingle()
                 );
