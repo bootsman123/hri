@@ -1,4 +1,4 @@
-filename = report
+filename = reportHRI
 $(filename).pdf: $(filename).tex
 	pdflatex  $(filename)
 	bibtex $(filename)
