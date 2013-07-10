@@ -63,6 +63,12 @@
 \section{Introduction}
 Introducing the reader to the topic of learning from robots. 
 
+The topic learning from demonstration is a topic that has seen a huge growth in the last few years.
+This topic always consists of teaching a robot how to perform a task via demonstration by a human.  
+A new topic is that of learning a human how to perform a task from demonstration by a robot. 
+
+In this report an overview will be given of a robot capable of learning a human how to perform certain ``karate'' movements from demonstration by a robot. 
+In this system a robot is able to perform a motion, teach the human how to perform this motion, assess the performance of the human and give extra information on the motions that are performed the worst by the user. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,6 +84,8 @@ In order to build this system the following components were used:
   \item Nao robot
   \item Microsoft Kinect
 \end{itemize}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Software}
 In order to program this system the following software has been used:
@@ -117,6 +125,15 @@ Skeleton tracking + dynamic time warping
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Communication}
+Note here that we both use speech and gestures. 
+Note that we use both beat gestures(gestures without semantic content) as well as metaphoric gestures (gestures indication thinking as well as gestures indication). 
+
+The metaphoric gestures are:
+\begin{itemize}
+  \item Thinking
+  \item Flexing of the muscles
+  \item Bowing
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{World Model}
@@ -130,8 +147,14 @@ Skeleton tracking + dynamic time warping
 % Interaction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Interaction Patterns}
-State diagram etc....
 
+
+\begin{figure}[h!]
+	\caption{State diagram showing in what order the behaviours of the robot are performed}
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/stateDiagram}
+	\label{fig:overviewTotalSystem}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,13 +163,6 @@ State diagram etc....
 \section{Conclusion}
 
 
-
-\begin{figure}[h!]
-	\caption{A picture!}
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/stateDiagram}
-	\label{fig:name}
-\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BIBLIOGRAPHY
