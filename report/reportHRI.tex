@@ -78,10 +78,10 @@ The left hand punch and the right hand punch both are simple forward motions of 
 The defensive block is a slightly modified version of the ``Gedan barai'' motion used in Karate. 
 How this motion should be performed is visible in figure \ref{fig:gedanBarai}. 
 
-\begin{figure}[h!]
-	\caption{An instruction on how to perform the Gedan barai}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\textwidth]{images/gedanBarai}
+	\caption{An instruction on how to perform the Gedan barai.}
 	\label{fig:gedanBarai}
 \end{figure}
 
@@ -120,21 +120,37 @@ In order to program this system the following software has been used:
   \item Choregraph
 \end{itemize}
 
-The Kinect SDK and Visual Studio software are used to create a program in C# which controls the Nao and determines how well the user performed a gesture. 
+The Kinect SDK and Visual Studio software are used to create a program in C\# which controls the Nao and determines how well the user performed a gesture. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % System
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{System}
-Discuss the system from an AI point of view.
+In the following sections an overview of the entire system, the individual components and how the individual components interact with each other is given.
+In Figure~\ref{fig:system} the system is visualized.
+To discuss the various aspects of the system an AI perspective is taken, which means that ... 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/system.png}
+	\caption{Overview of the system and the individual components.}
+	\label{fig:system}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Perception}
 A way to detect the user and the body model. Do not mention the Kinect.
 
+Includes speech recognition...
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Communication}
+
+
+\subsubsection{Gestures}
+
+\subsubsection{Speech}
 Gestures + speech...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -169,20 +185,20 @@ The metaphoric gestures that are used are:
 
 The bowing gesture is used at the start of the program as bowing is a normal way to start any karate lesson. 
 The thinking gesture is used after the user performed all motions, people reported that it fooled them thinking that the computer was computing the score during the gesture. 
-The flexing of the muscles is used to show people how strong you are able to get by practicing a lot and is meant as motivation. 
+The flexing of the muscles is used to show people how strong you are able to get by practising a lot and is meant as motivation. 
 
 Another way the robot communicates with the user is by making a short sound and lighting up its LEDs in its ears. 
-When using the standard speech recognition in the robot this is standardly used to communicate to the user that it should now speak. 
-As we used the Microsoft Kinect for speech recognition this sound was not needed anymore. 
+When using the standard speech recognition in the robot this is standard used to communicate to the user that it should now speak. 
+As we used the Microsoft Kinect for speech recognition this sound was not needed any more. 
 During initial experiment we saw that people familiar with the robot would hesitate to speak as they thought the robot was not listening. 
 By adding the blieb and lighting up its LEDs in its ears this problem was solved. 
 
 During speeking the robot asks the user a lot of times to move his body the same way as the robot. 
 This is done as initial experiments showed that users are hesitating to move along. 
 
-The testing of all dialog is already done in an early phase of our project. 
+The testing of all dialogue is already done in an early phase of our project. 
 During this phase a simple wizard of oz experiment was conducted in which the Kinect was not yet used. 
-In order to fool people the Kinect was placed and connected to the computer to led the green indicater LED burn and the evaluation of a gesture was done at random. 
+In order to fool people the Kinect was placed and connected to the computer to led the green indicator LED burn and the evaluation of a gesture was done at random. 
 People did not notice and did indeed put extra effort in the performance of the gestures that the robot indicated needed improvement. 
 
 
@@ -195,17 +211,17 @@ The mappings consist of:
   \begin{tabular}{|l|l|} \hline
     Keyword & Possible words           \\
     \hline 
-    YES     & yes, sure, ETC.          \\
-    NO      & no, nope, ETC.           \\
-    LEFT    & left, left hand, ETC.    \\
-    RIGHT   & right, right hand, ETC.  \\
+    YES     & yes, sure, etc.          \\
+    NO      & no, nope, etc.           \\
+    LEFT    & left, left hand, etc.    \\
+    RIGHT   & right, right hand, etc.  \\
     \hline
   \end{tabular}
 \end{table}
 
 During the program Naomi will ask the user for input several times. 
 Some of the questions are used to keep the user active during the program and are just meant to give the user extra interaction with the robot. 
-An example of this question is: ``Have you practiced Robot Karate before?'' after which the robot either will say that it will be an easy lesson or asks the user to give extra attention to the gestures. 
+An example of this question is: ``Have you practised Robot Karate before?'' after which the robot either will say that it will be an easy lesson or asks the user to give extra attention to the gestures. 
 
 Other questions are used by the robot to give specific feedback.
 An example of this question is asked during the performance of the defensive block: ``Are you having more trouble with your left or with your right arm'', after based on the input of the user the robot will explain only one arm of the defensive block. 
@@ -226,11 +242,11 @@ An example of this question is asked during the performance of the defensive blo
 \section{Interaction Patterns}
 
 
-\begin{figure}[h!]
-	\caption{State diagram showing in what order the behaviours of the robot are performed}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.5\textwidth]{images/stateDiagram}
-	\label{fig:overviewTotalSystem}
+	\label{fig:state-diagram}
+	\caption{State diagram showing in what order the behaviours of the robot are performed.}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
