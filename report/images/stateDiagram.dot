@@ -16,7 +16,15 @@ digraph userStateDiagram{
 
 
  //Individual nodes
- perfect_performance[shape="box"]
- too_many_times[shape="box"]
- not_perfect_performance[shape="box"]
+ perfect_performance[shape="box" label = "User performed the motions perfectly"]
+ too_many_times[shape="box" label="User performed enough"]
+ not_perfect_performance[shape="box" label="User did not perform perfect"]
+explain_individual_part[label="Explain the motion with the worst performance"]
+evaluate[label="Evaluate the motion of the user"]
+record_complete_kata[label="Record the performance of a kata"]
+explain_parts[label="Explain all the motions in the kata"]
+explain_kata[label="Demonstrate the complete kata"]
+welcome[label="Welcome the user"]
+end[label="Say goodbye and end the lesson"]
+
 }
