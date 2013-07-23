@@ -222,7 +222,7 @@ The mappings consist of:
   \end{tabular}
 \end{table}
 
-During the program Naomi will ask the user for input several times. 
+During the program the robot will ask the user for input several times. 
 Some of the questions are used to keep the user active during the program and are just meant to give the user extra interaction with the robot. 
 An example of this question is: ``Have you practised Robot Karate before?'' after which the robot either will say that it will be an easy lesson or asks the user to give extra attention to the gestures. 
 
@@ -243,16 +243,46 @@ An example of this question is asked during the performance of the defensive blo
 % Interaction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Interaction Patterns}
-
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=\textwidth]{images/stateDiagram}
 	\label{fig:state-diagram}
 	\caption{State diagram showing in what order the behaviours of the robot are performed.}
 \end{figure}
+In this section we will walk you through all steps of a karate session. 
+The complete state diagram of the session is visible in figure \ref{fig:state-diagram}. 
 
-\section{Teaching in action}
+
+
+
+\subsection{Teaching in action}
+\textbf{Welcome the user:} a session starts with the robot explaining what the user can expect during the program. 
+To make the user familiar with interacting with the robot it asks wether the robot has already had been in a similar setting setting. 
+Depending on a positive or negative answer it will give a short sentence regarding the level of the session. 
+When a user does not respond it will say that the user must feel free to interact. 
+
+\textbf{Demonstrate the complete kata:} in this phase the robot shows the robot what the user has to learn during this session. 
+
+
+\textbf{Explain all the motions in the kata:} all motions in the kata are shown seperately to the user. 
+The robot first asks the user to perform along, as this will give the user a better understanding of the motions. 
+As is described in Section~\ref{sec:system} the robot explains the motions both visually and verbally. 
+
+\textbf{Record the performance of a kata:} 
+The robot asks the user to perform along with the robot while they both perform the complete kate. 
+In this session all motions of the user are recorded and evaluated by the computer. 
+
+\textbf{Evaluate the motion of the user:}
+The system determines to what extend the motions performed by the user match the ``perfect'' examples of a motion. 
+During this time the robot will assert a thinking stance. 
+
+\textbf{Explain the motion with the worst performance:}
+When the user did not perform perfectly or did not perform for a long time the robot will say what the motion is that had the worst performance. 
+He will then explain how the user has to perform this motion perfectly. 
+
+\textbf{Say goodbye and end the lesson:}
+As soon as the user performed the complete kata perfectly or performed for a long time the robot will end the lesson and tell the user to keep practicing. 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Conclusion
