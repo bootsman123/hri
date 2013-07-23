@@ -126,9 +126,15 @@ The Kinect SDK and Visual Studio software are used to create a program in C\# wh
 % System
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{System}
-In the following sections an overview of the entire system, the individual components and how the individual components interact with each other is given.
-In Figure~\ref{fig:system} the system is visualized.
-To discuss the various aspects of the system an AI perspective is taken, which means that ... 
+\label{sec:system}
+The system is a collection of different components, namely perception, world model and communication which are needed for the teaching session to run.
+In Figure~\ref{fig:system} an overview of the entire system, the individual components and the interaction between different components is given.
+In short the system works as follows: the robot initiates the teaching session by explaining the different techniques of the karate kata, both visually (i.e. motions) and verbally.
+The human perceives these techniques and tries to imitate them.
+In return the robot perceives the motions performed by the user and determine  how well each motion is performed.
+Afterwards the robot gives feedback and explains some, if needed, of the techniques again, which closes the loop.
+
+In the following section the components of the system are discussed at a conceptual level from an AI perspective, while the next section focusses on the technical aspects of the components.
 
 \begin{figure}[!ht]
 	\centering
@@ -139,9 +145,18 @@ To discuss the various aspects of the system an AI perspective is taken, which m
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Perception}
-A way to detect the user and the body model. Do not mention the Kinect.
+In order for the robot to ``know'' what is going on in the world it needs a way to perceive the environment.
+In our case perception consists of both detecting the gestures and recognizing speech of the human.
+
+
+A way to detect the user and the body model.
+Do not mention the Kinect.
 
 Includes speech recognition...
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{World Model}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -149,12 +164,10 @@ Includes speech recognition...
 
 
 \subsubsection{Gestures}
+by the robot and the poses.....
 
 \subsubsection{Speech}
 Gestures + speech...
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{World Model}
 
 
 
