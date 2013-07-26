@@ -162,6 +162,6 @@ $RECYCLE.BIN/
 *.log
 *.out
 *.run.xml
-*.syntex.gz
+*.synctex.gz
 *-blx.bib
 *.pdf

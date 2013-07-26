@@ -61,9 +61,6 @@
 % INTRODUCTION
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-%% TODO uitleggen waarom dit nuttig is
-%% TODO referenties erbij zetten naar andere artikelen
-
 The topic learning from demonstration is a topic that has seen a huge growth in the last few years.
 This topic always consists of teaching a robot how to perform a task via demonstration by a human.  
 A new topic is that of learning a human how to perform a task from demonstration by a robot. 
@@ -129,9 +126,15 @@ The Kinect SDK and Visual Studio software are used to create a program in C\# wh
 % System
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{System}
-In the following sections an overview of the entire system, the individual components and how the individual components interact with each other is given.
-In Figure~\ref{fig:system} the system is visualized.
-To discuss the various aspects of the system an AI perspective is taken, which means that ... 
+\label{sec:system}
+The system is a collection of different components, namely perception, world model and communication which are needed for the teaching session to run.
+In Figure~\ref{fig:system} an overview of the entire system, the individual components and the interaction between different components is given.
+In short the system works as follows: the robot initiates the teaching session by explaining the different techniques of the karate kata, both visually (i.e. motions) and verbally.
+The human perceives these techniques and tries to imitate them.
+In return the robot perceives the motions performed by the user and determine  how well each motion is performed.
+Afterwards the robot gives feedback and explains some, if needed, of the techniques again, which closes the loop.
+
+In the following section the components of the system are discussed at a conceptual level from an AI perspective, while the next section focusses on the technical aspects of the components.
 
 \begin{figure}[!ht]
 	\centering
@@ -142,9 +145,19 @@ To discuss the various aspects of the system an AI perspective is taken, which m
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Perception}
-A way to detect the user and the body model. Do not mention the Kinect.
+In order for the robot to ``know'' what is going on in the world it needs a way to perceive the environment.
+In our case perception consists of both detecting the gestures and recognizing speech of the human.
+In theory the robot has the sensors needed to both types of perceptual input, however in practice the sensors lack the precision needed for the necessary ...
+
+
+A way to detect the user and the body model.
+Do not mention the Kinect.
 
 Includes speech recognition...
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{World Model}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -152,12 +165,10 @@ Includes speech recognition...
 
 
 \subsubsection{Gestures}
+by the robot and the poses.....
 
 \subsubsection{Speech}
 Gestures + speech...
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{World Model}
 
 
 
@@ -222,7 +233,7 @@ The mappings consist of:
   \end{tabular}
 \end{table}
 
-During the program the robot will ask the user for input several times. 
+During the program Naomi will ask the user for input several times. 
 Some of the questions are used to keep the user active during the program and are just meant to give the user extra interaction with the robot. 
 An example of this question is: ``Have you practised Robot Karate before?'' after which the robot either will say that it will be an easy lesson or asks the user to give extra attention to the gestures. 
 
@@ -243,51 +254,20 @@ An example of this question is asked during the performance of the defensive blo
 % Interaction
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Interaction Patterns}
+
+
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=\textwidth]{images/stateDiagram}
+	\includegraphics[width=0.5\textwidth]{images/stateDiagram}
+	\label{fig:state-diagram}
 	\caption{State diagram showing in what order the behaviours of the robot are performed.}
-	\label{fig:statediagram}
 \end{figure}
-In this section we will walk you through all steps of a karate session. 
-The complete state diagram of the session is visible in Figure~\ref{fig:statediagram}. 
-
-\subsection{Teaching in action}
-\paragraph{Welcome the user} 
-A session starts with the robot explaining what the user can expect during the program. 
-To make the user familiar with interacting with the robot it asks wether the robot has already had been in a similar setting setting. 
-Depending on a positive or negative answer it will give a short sentence regarding the level of the session. 
-When a user does not respond it will say that the user must feel free to interact. 
-
-\paragraph{Demonstrate the complete kata} 
-In this phase the robot shows the robot what the user has to learn during this session. 
-
-\paragraph{Explain all the motions in the kata} 
-All motions in the kata are shown seperately to the user. 
-The robot first asks the user to perform along, as this will give the user a better understanding of the motions. 
-As is described in Section~\ref{sec:system} the robot explains the motions both visually and verbally. 
-
-\paragraph{Record the performance of a kata} 
-The robot asks the user to perform along with the robot while they both perform the complete kate. 
-In this session all motions of the user are recorded and evaluated by the computer. 
-
-\paragraph{Evaluate the motion of the user}
-The system determines to what extend the motions performed by the user match the ``perfect'' examples of a motion. 
-During this time the robot will assert a thinking stance. 
-
-\paragraph{Explain the motion with the worst performance}
-When the user did not perform perfectly or did not perform for a long time the robot will say what the motion is that had the worst performance. 
-He will then explain how the user has to perform this motion perfectly. 
-
-\paragraph{Say goodbye and end the lesson}
-As soon as the user performed the complete kata perfectly or performed for a long time the robot will end the lesson and tell the user to keep practicing. 
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Conclusion
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
-In this project a proof of concept was introduced of a robot  
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
