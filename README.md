@@ -10,6 +10,7 @@ Install visual studio 2012
 
 Install the Kinect SDK (http://www.microsoft.com/en-us/kinectforwindowsdev/Start.aspx)
 
+Install Naoqi for C# (https://community.aldebaran-robotics.com/resources/)
 Download our project by cloning it
 
 Open our project in visual studio
