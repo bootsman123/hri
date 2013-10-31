@@ -1,8 +1,5 @@
-hri
+Karate teaching Nao
 ===
-
-Human-Robot Interaction Project
-
 
 How to install: 
 
