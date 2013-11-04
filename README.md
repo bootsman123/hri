@@ -9,6 +9,10 @@ Install the Kinect SDK (http://www.microsoft.com/en-us/kinectforwindowsdev/Start
 
 Install Naoqi for C# (https://community.aldebaran-robotics.com/resources/)
 
+Install Nao's life including all behaviours. 
+
+Install our included behaviours on the Nao robot. 
+
 Download our project by cloning it
 
 Open our project in visual studio
